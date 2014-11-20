@@ -4,6 +4,7 @@
 		<title>index</title>
 
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="/js/lib/jquery.textCounter.min.js"></script>
 		
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
