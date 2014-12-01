@@ -1,7 +1,5 @@
 package io.sample.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,6 +41,10 @@ public class IndexController extends AbstractBaseController {
 
     	String returnUrl = "index";
 
+    	if(sample == null) {
+    		logger.info("this is null");
+    	}
+    	
     	if(sample.equals("test1")) {
     		returnUrl = "sample/test1";
     	} else if (sample.equals("test2")) {
@@ -53,6 +55,8 @@ public class IndexController extends AbstractBaseController {
     		returnUrl = "sample/test4";
     	} else if (sample.equals("test5")) {
     		returnUrl = "sample/test5";
+    	} else {
+    		returnUrl = "index";
     	}
 
     	logger.info(">>>" + sample);
