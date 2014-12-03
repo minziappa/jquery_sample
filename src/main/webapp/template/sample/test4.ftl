@@ -28,7 +28,7 @@ table#t01 th	{
 <script>
 function addElement() {
 
-	  var ni = document.getElementById('myDiv');
+	  var ni = document.getElementById('enquete');
 	  var numi = document.getElementById('theValue');
 	  var num = (document.getElementById('theValue').value -1)+ 2;
 
@@ -39,6 +39,7 @@ function addElement() {
 	  var table = document.getElementById("t01");
 
 	  // Create a row
+	  console.log(">>>>" + numi.value);
 	  var row = table.insertRow(numi.value);
 	  var trNum = num;
 	  row.setAttribute('id', trNum);
@@ -51,6 +52,8 @@ function addElement() {
 	  var inputHtml = '<input type="text" name="meetingName">';
 	  var selectHtml = '<select><option value="1">☀</option><option value="2">☁</option><option value="3">☂</option></select>';
 	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Click Me!</button>';
+
+	  cell1.setAttribute('width', '30%');
 
 	  cell1.innerHTML = inputHtml,
 	  cell2.innerHTML = selectHtml,
@@ -80,22 +83,35 @@ function resetId(tableName) {
 		  tr[i+1].id = i+1;
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Click Me!</button>';
 	  }
-}
+	}
 </script>
 
 // You have to same the increase number
-<input type="hidden" value="0" id="theValue" />
+<input type="hidden" value="0" id="theValue" autocomplete="off" />
 
 <p><a href="javascript:;" onclick="addElement();">Add Some Elements</a></p>
 
-<div id="myDiv"></div>
+<div id="enquete"></div>
 
-<table id="t01">
-<tr>
-  <th>First Name</th>
-  <th>Last Name</th>
-  <th>Points</th>
-</tr>
-</table>
+<form name="myForm" action="demo_form.do" onsubmit="return validateForm()" method="post">
+	<table id="t01">
+	<tr>
+	  <th>First Name</th>
+	  <th>Last Name</th>
+	  <th>Points</th>
+	</tr>
+	</table>
+</form>
 
+<script>
+function validateForm() {
+    var x = document.forms["myForm"]["fname"].value;
+    if (x==null || x=="") {
+        alert("First name must be filled out");
+        return false;
+    }
+}
+</script>
+
+	<input type="submit" value="Submit">
 </@layout.myLayout>
