@@ -26,7 +26,15 @@ table#t01 th	{
 </style>
 
 <script>
-function addElement() {
+
+window.onload = function(){
+	var cnt = document.getElementById('theValue');
+	for(i=0; i < cnt; i++) {
+		addElement("${name}");
+	}
+}
+
+function addElement(name) {
 
 	  var ni = document.getElementById('enquete');
 	  var numi = document.getElementById('theValue');
@@ -49,9 +57,9 @@ function addElement() {
 	  var cell2 = row.insertCell(1); 
 	  var cell3 = row.insertCell(2);
 
-	  var inputHtml = '<input type="text" name="meetingName">';
-	  var selectHtml = '<select><option value="1">☀</option><option value="2">☁</option><option value="3">☂</option></select>';
-	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Click Me!</button>';
+	  var inputHtml = '<input type="text" name="name" value="'+ name +'">';
+	  var selectHtml = '<select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
+	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Remove</button>';
 
 	  cell1.setAttribute('width', '30%');
 
@@ -81,37 +89,44 @@ function resetId(tableName) {
 
 	  for(i=0; i < rows; i++) {
 		  tr[i+1].id = i+1;
-		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Click Me!</button>';
+		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Delete</button>';
 	  }
 	}
 </script>
 
 // You have to same the increase number
-<input type="hidden" value="0" id="theValue" autocomplete="off" />
 
-<p><a href="javascript:;" onclick="addElement();">Add Some Elements</a></p>
+<br/><br/>
+<button type="button" onclick="addElement('');">Add Some Elements</button>
 
 <div id="enquete"></div>
 
-<form name="myForm" action="demo_form.do" onsubmit="return validateForm()" method="post">
+<form name="myForm" action="/sample/comfirm" method="post">
+<input type="hidden" name="cnt" value="${cnt?if_exists}" id="theValue" autocomplete="off" />
 	<table id="t01">
 	<tr>
 	  <th>First Name</th>
-	  <th>Last Name</th>
-	  <th>Points</th>
+	  <th>State</th>
+	  <th>Button</th>
+	</tr>
+	<tr id="1">
+		<td width="30%"><input type="text" name="name" value=""></td>
+		<td><select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
+		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
 	</table>
+	<input type="submit" value="Submit">
 </form>
 
 <script>
 function validateForm() {
-    var x = document.forms["myForm"]["fname"].value;
+    var x = document.forms["myForm"]["name"].value;
     if (x==null || x=="") {
         alert("First name must be filled out");
         return false;
     }
+
 }
 </script>
 
-	<input type="submit" value="Submit">
 </@layout.myLayout>
