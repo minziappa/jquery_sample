@@ -23,10 +23,20 @@ table#t01 th	{
     background-color: black;
     color: white;
 }
+
+/*
+ * Change the modal size.
+ */
+@media screen and (min-width: 768px) {
+	#myModal .modal-dialog  {width:900px;}
+}
+
 </style>
 
 <script>
-
+/*
+ * Add a input element which is inputed by user
+ */
 function addElement() {
 
 	  var ni = document.getElementById('enquete');
@@ -58,8 +68,10 @@ function addElement() {
 	  cell1.innerHTML = inputHtml,
 	  cell2.innerHTML = selectHtml,
 	  cell3.innerHTML = buttonHtml;
-	}
-
+}
+/*
+ * Delete a input element which is selected by user
+ */
 function removeElement(trNum) {
 
 	  var d = document.getElementById('t01');
@@ -71,8 +83,10 @@ function removeElement(trNum) {
 
 	  // Reset numbers of TR tag.
 	  resetId("t01");
-	}
-
+}
+/*
+ * Order the number on TR of the table
+ */
 function resetId(tableName) {
 
 	  var table = document.getElementById(tableName);
@@ -84,34 +98,15 @@ function resetId(tableName) {
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Remove</button>';
 	  }
 }
-
-function getCellDataFromTable(tableName) {
-
-	  var table = document.getElementById(tableName);
-	  var cells = table.getElementsByTagName('td');
-
-	  for (var i=0,len=cells.length; i<len; i++) {
-		  console.log(cells[i].innerHTML);
-		  /*
-		  cells[i].onclick = function(){
-		        console.log(this.innerHTML);
-		        // if you know it's going to be numeric:
-		        //console.log(parseInt(this.innerHTML),10);
-		  }
-		  */
-	  }
-
-}
-
-
-
+/*
+ * Make the table on the Modal for confirming the data.
+ */
 function confirmData() {
 
 	  if(!validateForm()) {
 		  console.log(">>1>>");
 		  return;
 	  }
-	  console.log(">>2>>");
 
 	  // Call the modal
 	  $(window).ready(function(){
@@ -122,8 +117,6 @@ function confirmData() {
       var cnt = cntElements.value;
 
       var table1 = document.getElementById("t01");
-      console.log(" firstChild 1 >>> " + table1.rows[1].cells[0].firstChild.value);
-      console.log(" firstChild 2 >>> " + table1.rows[1].cells[1].firstChild.value);
 	  // Create a table
 	  var table2 = document.getElementById("t02");
 
@@ -157,13 +150,93 @@ function confirmData() {
 
 }
 
+function getCellDataFromTable(tableName) {
+
+	  var table = document.getElementById(tableName);
+	  var cells = table.getElementsByTagName('td');
+
+	  for (var i=0,len=cells.length; i<len; i++) {
+		  console.log(cells[i].innerHTML);
+		  /*
+		  cells[i].onclick = function(){
+		        console.log(this.innerHTML);
+		        // if you know it's going to be numeric:
+		        //console.log(parseInt(this.innerHTML),10);
+		  }
+		  */
+	  }
+
+}
+
+/*
+ * Check the validity of the data inputed.
+ */
+function validateForm() {
+
+	var inputs = document.getElementsByName("aname");
+	// the button to add a row on the table.
+	var addRow = document.getElementById("addRow");
+	if(inputs.length == 0) {
+		  addRow.focus();
+		  addRow.style.border = "1px solid red";
+			return false;
+	} else {
+		  addRow.style.border = "";
+	}
+
+	var cntInput = inputs.length;
+
+	var isError = true;
+	for (i=0; i < cntInput; i++) {
+	    var x = inputs[i].value;
+	    console.log(">>3>>" + x.length);
+	    if (x==null || x=="" || x.length > 10) {
+	    	if(isError) {
+		        inputs[i].focus();
+		        inputs[i].scrollIntoView();
+	    	}
+	        inputs[i].style.border = "1px solid red";
+	        isError = false;
+	    } else {
+	    	inputs[i].style.border = "";
+	    }
+	}
+	var state = document.getElementsByName("state");
+	var cntState = state.length;
+	for (i=0; i < cntState; i++) {
+	    var x = state[i].value;
+	    console.log(">>4>>" + x.length);
+	    if (x==null || x=="" || x=="0") {
+	    	if(isError) {
+	    		state[i].focus();
+	    		state[i].scrollIntoView();
+	    	}
+	    	state[i].style.border = "1px solid red";
+	        isError = false;
+	    } else {
+	    	state[i].style.border = "";
+	    }
+	}
+
+	return isError;
+}
+
+function deleteTr() {
+
+	var table = document.getElementById("t02");
+	var tableRows = table.getElementsByTagName('tr');
+
+	for(var i = 1; i < tableRows.length; i++){
+		tableRows[i].parentNode.removeChild(tableRows[i]);
+		i--;
+	}
+
+}
 </script>
 
-// You have to same the increase number
-
-<button onclick="confirmData()">Try it</button>
+<button onclick="confirmData()">Check the validation</button>
 <br/><br/>
-<button type="button" onclick="addElement();">Add Some Elements</button>
+<button type="button" id="addRow" onclick="addElement();">Add Some Elements</button>
 
 <div id="enquete"></div>
 
@@ -176,65 +249,17 @@ function confirmData() {
 	  <th>Button</th>
 	</tr>
 	<tr id="1">
-		<td width="30%"><input type="text" name="aname" value=""></td>
-		<td><select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
+		<td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;"></td>
+		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
 	</table>
 	<input type="submit" value="Submit">
 </form>
 
-<script>
-function validateForm() {
-
-	var inputs = document.getElementsByName("aname");
-	console.log("-->" + inputs.length);
-
-	// var cntInput = document.forms["myForm"]["aname"].length;
-	var cntInput = inputs.length;
-
-	
-	for (i=0; i < cntInput; i++) {
-	    var x = inputs[i].value;
-	    console.log(">>3>>" + x.length);
-	    if (x==null || x=="" || x.length > 10) {
-	    	
-	    	
-	        inputs[i].focus();
-	        inputs[i].scrollIntoView();
-
-	        inputs[i].style.border = "1px solid red";
-	        
-	        return false;
-	    }
-	}
-	
-	return true;
-
-}
-</script>
-
-<script>
-function deleteTr() {
-
-	var table = document.getElementById("t02");
-	var tableRows = table.getElementsByTagName('tr');
-
-	console.log(" >>> " + tableRows.length);
-	for(var i = 1; i < tableRows.length; i++){
-		tableRows[i].parentNode.removeChild(tableRows[i]);
-		i--;
-	}
-
-}
-</script>
-
 <!-- Button trigger modal -->
-<button type="button" onclick="return confirmData();" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+<button type="button" onclick="return confirmData();" class="btn btn-primary btn-lg" data-toggle="modal">
   Modal Demo
-</button>
-  <button type="button" onclick="return confirmData();" class="btn btn-primary btn-lg" data-toggle="modal">
-  Modal Demo2
 </button>
 
 <a class="btn" data-toggle="modal" onclick="return confirmData();">Launch Modal</a>
