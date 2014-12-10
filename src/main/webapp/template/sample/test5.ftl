@@ -69,6 +69,7 @@ function addElement() {
 	  cell2.innerHTML = selectHtml,
 	  cell3.innerHTML = buttonHtml;
 }
+
 /*
  * Delete a input element which is selected by user
  */
@@ -84,6 +85,7 @@ function removeElement(trNum) {
 	  // Reset numbers of TR tag.
 	  resetId("t01");
 }
+
 /*
  * Order the number on TR of the table
  */
@@ -98,6 +100,7 @@ function resetId(tableName) {
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Remove</button>';
 	  }
 }
+
 /*
  * Make the table on the Modal for confirming the data.
  */
@@ -232,6 +235,16 @@ function deleteTr() {
 	}
 
 }
+
+function submitform() {
+  document.myForm.submit();
+}
+
+function captureReturnKey(e) {
+    if(e.keyCode==13 && e.srcElement.type != 'textarea')
+    return false;
+} 
+
 </script>
 
 <button onclick="confirmData()">Check the validation</button>
@@ -240,8 +253,8 @@ function deleteTr() {
 
 <div id="enquete"></div>
 
-<form name="myForm" action="/sample/comfirm" onsubmit="return validateForm()" method="post">
-<input type="hidden" name="cnt" value="1" id="theValue" autocomplete="off" />
+<form name="myForm" action="/sample/comfirm" method="post" onkeydown="return captureReturnKey(event)">
+	<input type="hidden" name="cnt" value="1" id="theValue" autocomplete="off" />
 	<table id="t01">
 	<tr>
 	  <th>First Name</th>
@@ -254,7 +267,6 @@ function deleteTr() {
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
 	</table>
-	<input type="submit" value="Submit">
 </form>
 
 <!-- Button trigger modal -->
@@ -284,11 +296,10 @@ function deleteTr() {
 
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="deleteTr();">Close</button>
-        <button type="button" class="btn btn-primary" onclick="getCellDataFromTable('t02');">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="javascript: submitform();">Save changes</button>
       </div>
     </div>
   </div>
 </div>
-
 
 </@layout.myLayout>
