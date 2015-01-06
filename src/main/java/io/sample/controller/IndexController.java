@@ -97,7 +97,7 @@ public class IndexController extends AbstractBaseController {
 		response.setContentType("application/json; charset=utf-8");
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter pw = response.getWriter();
-		pw.write("{\"aaa\":\"ddd-" + value + "\"}");
+		pw.write("{\"aaa\":\"ddd" + value + "\"}");
 		pw.flush();
 		pw.close();
 	}

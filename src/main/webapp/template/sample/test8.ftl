@@ -258,7 +258,7 @@ function autoSearch(num) {
 	            url: 'http://localhost:9000/sample/test',
 	            contentType: "application/json",
 	            dataType: "json",
-	            data: "{ 'text' : '" + $('form').find('input[name=aname]:eq(' + num + ')').val() + "'}",
+	            data: '{ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
 	            success: function(data, textStatus, jqXHR) {
 	            	// {"aaa":"ddd"}, Don't do this like this {'aaa':'ddd'}
 	                $('form').find('input[name=aname]:eq(' + num + ')').attr('value',data.aaa); 
