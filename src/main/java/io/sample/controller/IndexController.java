@@ -1,9 +1,15 @@
 package io.sample.controller;
 
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import io.sample.bean.para.UserPara;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -51,22 +58,14 @@ public class IndexController extends AbstractBaseController {
     	if(sample == null) {
     		logger.info("this is null");
     	}
-    	
-    	if(sample.equals("test1")) {
-    		returnUrl = "sample/test1";
-    	} else if (sample.equals("test2")) {
-    		returnUrl = "sample/test2";
-    	} else if (sample.equals("test3")) {
-    		returnUrl = "sample/test3";
-    	} else if (sample.equals("test4")) {
-    		returnUrl = "sample/test4";
-    	} else if (sample.equals("test5")) {
-    		returnUrl = "sample/test5";
-    	} else {
+
+    	if(sample.equals("sample")) {
     		returnUrl = "index";
+    	} else {
+    		returnUrl = "sample/" + sample;	
     	}
 
-    	logger.info(">>>" + sample);
+    	logger.info(">>>" + returnUrl);
 
     	model.addAttribute("name", "Hello World!");
 
@@ -83,6 +82,24 @@ public class IndexController extends AbstractBaseController {
     	session.setAttribute("cnt", Integer.valueOf(userPara.getCnt()) + 1);
 
 		return "confirm";
+	}
+
+    @RequestMapping(value="/test")
+	public void test(@RequestBody String body, HttpServletResponse response) throws Exception {
+
+    	logger.info("body >> " + body);
+
+    	JSONParser parser=new JSONParser();
+    	Object obj = parser.parse(body);
+    	JSONObject jsonObject = (JSONObject) obj;
+    	String value = (String)jsonObject.get("text");
+
+		response.setContentType("application/json; charset=utf-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter pw = response.getWriter();
+		pw.write("{\"aaa\":\"ddd-" + value + "\"}");
+		pw.flush();
+		pw.close();
 	}
 
 }
