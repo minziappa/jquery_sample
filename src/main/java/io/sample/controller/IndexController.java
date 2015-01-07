@@ -1,12 +1,17 @@
 package io.sample.controller;
 
 import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import io.sample.bean.para.UserPara;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /***
  * The <code>IndexController</code> class represents action controller.
@@ -84,8 +90,8 @@ public class IndexController extends AbstractBaseController {
 		return "confirm";
 	}
 
-    @RequestMapping(value="/test")
-	public void test(@RequestBody String body, HttpServletResponse response) throws Exception {
+    @RequestMapping(value="/ajaxPost")
+	public void ajaxPost(@RequestBody String body, HttpServletResponse response) throws Exception {
 
     	logger.info("body >> " + body);
 
@@ -98,6 +104,45 @@ public class IndexController extends AbstractBaseController {
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter pw = response.getWriter();
 		pw.write("{\"aaa\":\"ddd" + value + "\"}");
+		pw.flush();
+		pw.close();
+	}
+
+    @RequestMapping(value="/ajaxGet")
+	public void ajaxGet(@RequestParam("body") String body, HttpServletResponse response) throws Exception {
+
+    	logger.info("body >> " + body);
+
+    	JSONParser parser=new JSONParser();
+    	Object obj = parser.parse(body);
+    	JSONObject jsonObject = (JSONObject) obj;
+    	String value = (String)jsonObject.get("text");
+
+    	if(value.equals("aaa")) {
+    		value = "test";
+    	} else {
+    		value = "";
+    	}
+
+		response.setContentType("application/json; charset=utf-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter pw = response.getWriter();
+		// pw.write("{\"aaa\":\"" + value + "\"}");
+		
+		LinkedList<String> linked = new LinkedList<String>();
+		linked.add("aaa");
+		linked.add("abb");
+		linked.add("abc");
+		linked.add("aabcs");
+		
+		Map<String, LinkedList<String>> map = new LinkedHashMap<String, LinkedList<String>>();
+		map.put("aaa", linked);
+
+		String jsonString = JSONValue.toJSONString(map);
+
+		logger.info(jsonString);
+
+		pw.write(jsonString);
 		pw.flush();
 		pw.close();
 	}

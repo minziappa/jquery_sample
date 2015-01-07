@@ -250,27 +250,23 @@ function autoSearch(num) {
 	console.log("1");
 	$(document).ready(function() {
 		console.log("2");
-	    $('form').keyup(function(e) {
-	        e.preventDefault();
-	        console.log("3");
-	        $.ajax({
-	            type: 'POST',
-	            url: 'http://localhost:9000/sample/ajaxPost',
-	            contentType: "application/json",
-	            dataType: "json",
-	            data: '{ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
-	            cache: false,
-	            success: function(data, textStatus, jqXHR) {
-	            	// {"aaa":"ddd"}, Don't do this like this {'aaa':'ddd'}
-	                $('form').find('input[name=aname]:eq(' + num + ')').attr('value',data.aaa); 
-	            },
-	            error: function(xhr, status) {
-	            	console.log(xhr.responseText);
-	            	//alert(xhr.responseText);
-	            }
-	        });
-	        return false;
-	    });
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:9000/sample/ajaxGet',
+            contentType: "application/json",
+            dataType: "json",
+            data: 'body={ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
+            cache: false,
+            success: function(data, textStatus, jqXHR) {
+                $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
+            },
+            error: function(xhr, status) {
+            	console.log(xhr.responseText);
+            	//alert(xhr.responseText);
+            }
+        });
+
 	    console.log("4");
 	});
 }

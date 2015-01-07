@@ -250,31 +250,83 @@ function autoSearch(num) {
 	console.log("1");
 	$(document).ready(function() {
 		console.log("2");
-	    $('form').keyup(function(e) {
-	        e.preventDefault();
-	        console.log("3");
-	        $.ajax({
-	            type: 'POST',
-	            url: 'http://localhost:9000/sample/ajaxPost',
-	            contentType: "application/json",
-	            dataType: "json",
-	            data: '{ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
-	            cache: false,
-	            success: function(data, textStatus, jqXHR) {
-	            	// {"aaa":"ddd"}, Don't do this like this {'aaa':'ddd'}
-	                $('form').find('input[name=aname]:eq(' + num + ')').attr('value',data.aaa); 
-	            },
-	            error: function(xhr, status) {
-	            	console.log(xhr.responseText);
-	            	//alert(xhr.responseText);
-	            }
-	        });
-	        return false;
-	    });
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:9000/sample/ajaxGet',
+            contentType: "application/json",
+            dataType: "json",
+            data: 'body={ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
+            cache: false,
+            success: function(data, textStatus, jqXHR) {
+                $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
+            },
+            error: function(xhr, status) {
+            	console.log(xhr.responseText);
+            	//alert(xhr.responseText);
+            }
+        });
+
 	    console.log("4");
 	});
 }
 
+</script>
+
+<script>
+function repoFormatResult(repo) {
+   var markup = '<div class="row-fluid">' +
+      '<div class="span2"><img src="' + repo.owner.avatar_url + '" /></div>' +
+      '<div class="span10">' +
+         '<div class="row-fluid">' +
+            '<div class="span6">' + repo.full_name + '</div>' +
+            '<div class="span3"><i class="fa fa-code-fork"></i> ' + repo.forks_count + '</div>' +
+            '<div class="span3"><i class="fa fa-star"></i> ' + repo.stargazers_count + '</div>' +
+         '</div>';
+
+   if (repo.description) {
+      markup += '<div>' + repo.description + '</div>';
+   }
+
+   markup += '</div></div>';
+
+   return markup;
+}
+
+function repoFormatSelection(repo) {
+   return repo.full_name;
+}
+</script>
+
+
+<script id="script_e7">
+$(document).ready(function() {
+$("#e7").select2({
+    placeholder: "Search for a repository",
+    minimumInputLength: 3,
+    ajax: {
+        url: "https://api.github.com/search/repositories",
+        dataType: 'json',
+        quietMillis: 250,
+        data: function (term, page) { // page is the one-based page number tracked by Select2
+            return {
+                q: term, //search term
+                page: page // page number
+            };
+        },
+        results: function (data, page) {
+            var more = (page * 30) < data.total_count; // whether or not there are more results available
+
+            // notice we return the value of more so Select2 knows if more results can be loaded
+            return { results: data.items, more: more };
+        }
+    },
+    formatResult: repoFormatResult, // omitted for brevity, see the source of this page
+    formatSelection: repoFormatSelection, // omitted for brevity, see the source of this page
+    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+});
+});
 </script>
 
 <button onclick="confirmData()">Check the validation</button>
@@ -291,7 +343,8 @@ function autoSearch(num) {
 	  <th>Button</th>
 	</tr>
 	<tr id="1">
-		<td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
+		<!-- <td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td> -->
+		<td width="30%"><input type="hidden" class="bigdrop" id="e7" style="width:500px"/></td>
 		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>

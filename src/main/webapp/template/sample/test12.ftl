@@ -24,6 +24,7 @@ table#t01 th	{
     color: white;
 }
 
+
 /*
  * Change the modal size.
  */
@@ -250,29 +251,47 @@ function autoSearch(num) {
 	console.log("1");
 	$(document).ready(function() {
 		console.log("2");
-	    $('form').keyup(function(e) {
-	        e.preventDefault();
-	        console.log("3");
-	        $.ajax({
-	            type: 'POST',
-	            url: 'http://localhost:9000/sample/ajaxPost',
-	            contentType: "application/json",
-	            dataType: "json",
-	            data: '{ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
-	            cache: false,
-	            success: function(data, textStatus, jqXHR) {
-	            	// {"aaa":"ddd"}, Don't do this like this {'aaa':'ddd'}
-	                $('form').find('input[name=aname]:eq(' + num + ')').attr('value',data.aaa); 
-	            },
-	            error: function(xhr, status) {
-	            	console.log(xhr.responseText);
-	            	//alert(xhr.responseText);
-	            }
-	        });
-	        return false;
-	    });
+
+		var availableTags = ["ActionScript",
+		             		"AppleScript","Asp","BASIC","Scheme"];
+
+
+		
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:9000/sample/ajaxGet',
+            contentType: "application/json",
+            dataType: "json",
+            data: 'body={ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
+            cache: false,
+            success: function(data, textStatus, request) {
+            	if(!isBlank(data.aaa)) {
+            		console.log(data.aaa);
+            		availableTags = data.aaa;
+            		// $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
+            		$('#statuses').html('<li>' + data.aaa + '</li>');
+            	} else {
+            		// $('#statuses').append('<li>' + data.aaa + '</li>');
+            		// $('#statuses').html('<li>No</li>');
+            	}
+
+         		$("#tags").autocomplete({source: availableTags});
+            },
+            error: function(xhr, status) {
+            	console.log(xhr.responseText);
+            	//alert(xhr.responseText);
+            }
+        });
+
 	    console.log("4");
 	});
+}
+
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
 }
 
 </script>
@@ -280,7 +299,9 @@ function autoSearch(num) {
 <button onclick="confirmData()">Check the validation</button>
 <br/><br/>
 <button type="button" id="addRow" onclick="addElement();">Add Some Elements</button>
-
+<div>
+<ul id="statuses"></ul>
+</div>
 <div id="enquete"></div>
 <form name="myForm" action="/sample/comfirm" method="post" onkeydown="return captureReturnKey(event)">
 	<input type="hidden" name="cnt" value="1" id="theValue" autocomplete="off" />
@@ -291,14 +312,15 @@ function autoSearch(num) {
 	  <th>Button</th>
 	</tr>
 	<tr id="1">
-		<td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
+
+		<td width="30%"><input type="text" id="tags" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
 		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
 	</table>
 </form>
 
-<!-- Button trigger modal -->
+<!-- Button trigger modal  -->
 <button type="button" onclick="return confirmData();" class="btn btn-primary btn-lg" data-toggle="modal">
   Modal Demo
 </button>
