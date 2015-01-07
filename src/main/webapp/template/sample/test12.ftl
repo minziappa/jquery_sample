@@ -275,7 +275,8 @@ function autoSearch(num) {
             		// $('#statuses').html('<li>No</li>');
             	}
 
-         		$("#tags").autocomplete({source: availableTags});
+            	$('form').find('input[name=aname]:eq(' + num + ')').autocomplete({source: availableTags});
+         		// $("#tags").autocomplete({source: availableTags});
             },
             error: function(xhr, status) {
             	console.log(xhr.responseText);
@@ -313,7 +314,7 @@ function isBlank(str) {
 	</tr>
 	<tr id="1">
 
-		<td width="30%"><input type="text" id="tags" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
+		<td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
 		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
