@@ -147,4 +147,47 @@ public class IndexController extends AbstractBaseController {
 		pw.close();
 	}
 
+    @RequestMapping(value="/ajaxGet2")
+	public void ajaxGet2(@RequestParam("body") String body, HttpServletResponse response) throws Exception {
+
+    	logger.info("body >> " + body);
+
+    	JSONParser parser=new JSONParser();
+    	Object obj = parser.parse(body);
+    	JSONObject jsonObject = (JSONObject) obj;
+    	String value = (String)jsonObject.get("text");
+
+    	if(value.equals("aaa")) {
+    		value = "test";
+    	} else {
+    		value = "";
+    	}
+
+		response.setContentType("application/json; charset=utf-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter pw = response.getWriter();
+		// pw.write("{\"aaa\":\"" + value + "\"}");
+		
+		LinkedList<Map<String, String>> linked = new LinkedList<Map<String, String>>();
+		Map<String, String> map1 = new LinkedHashMap<String, String>();
+		map1.put("map1", "value1");
+		map1.put("map2", "value2");
+		Map<String, String> map2 = new LinkedHashMap<String, String>();
+		map2.put("map1", "value21");
+		map2.put("map2", "value22");
+		linked.add(map1);
+		linked.add(map2);
+
+		Map<String, LinkedList<Map<String, String>>> map = new LinkedHashMap<String, LinkedList<Map<String, String>>>();
+		map.put("aaa", linked);
+
+		String jsonString = JSONValue.toJSONString(map);
+
+		logger.info(jsonString);
+
+		pw.write(jsonString);
+		pw.flush();
+		pw.close();
+	}
+
 }
