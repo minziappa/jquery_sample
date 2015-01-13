@@ -32,6 +32,54 @@ table#t01 th	{
 	#myModal .modal-dialog  {width:900px;}
 }
 
+/*
+ * Input for searching something.
+ */
+
+.input-results .input-searching {
+    background: #f4f4f4;
+    display: list-item;
+}
+
+.input-spinner {
+    background: #fff url('../../img/spinner.gif') no-repeat 100%;
+    background: url('../../img/spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+    background: url('../../img/spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/spinner.gif') no-repeat 100%, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/spinner.gif') no-repeat 100%, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+    background: url('../../img/spinner.gif') no-repeat 100%, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+}
+
+.input-search input {
+    width: 100%;
+    height: auto !important;
+    min-height: 26px;
+    padding: 4px 20px 4px 5px;
+    margin: 0;
+
+    outline: 0;
+    font-family: sans-serif;
+    font-size: 1em;
+
+    border: 1px solid #aaa;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+
+    background: #fff url('../../img/search.png') no-repeat 100% -22px;
+    background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+    background: url('../../img/search.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/search.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/search.png') no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
+    background: url('../../img/search.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+    background: url('../../img/search.png') no-repeat 100% -22px, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
+}
+
 </style>
 
 <script>
@@ -252,6 +300,7 @@ function autoSearch(num) {
 	$(document).ready(function() {
 		console.log("2");
 
+		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
 		var availableTags = [];
 
         $.ajax({
@@ -259,8 +308,19 @@ function autoSearch(num) {
             url: 'http://localhost:9000/sample/ajaxGet2',
             contentType: "application/json",
             dataType: "json",
-            data: 'body={ "text" : "' + $('form').find('input[name=aname]:eq(' + num + ')').val() + '"}',
+            data: 'body={ "text" : "' + $inputAname.val() + '"}',
             cache: false,
+            beforeSend: function(xhr, settings) {
+            	// $inputAname.attr('disabled', true);
+
+            	$('#search' + num).removeClass('input-search');
+            	$('#search' + num).addClass('input-spinner');
+
+            	// $inputHost.val("loading...");
+            	//$inputHost.addClass('loading');
+            	console.log(">>> selected >>" + $inputAname.val());
+            	// inputHost.value = "loading...";
+            },
             success: function(data, textStatus, request) {
             	if(!isBlank(data.aaa)) {
             		console.log(data.aaa);
@@ -279,6 +339,12 @@ function autoSearch(num) {
             	console.log(availableNames);
             	$('form').find('input[name=aname]:eq(' + num + ')').autocomplete({source: availableNames});
          		// $("#tags").autocomplete({source: availableTags});
+            },
+            complete: function(xhr, textStatus) {
+            	//$inputAname.attr('disabled', false);
+
+            	$('#search' + num).removeClass('input-spinner');
+            	$('#search' + num).addClass('input-search');
             },
             error: function(xhr, status) {
             	console.log(xhr.responseText);
@@ -316,7 +382,12 @@ function isBlank(str) {
 	</tr>
 	<tr id="1">
 
-		<td width="30%"><input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);"></td>
+		<td width="30%">
+			<div id="search0" class="input-search">
+				<input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);">
+			</div>
+		</td>
+
 		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
 		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>

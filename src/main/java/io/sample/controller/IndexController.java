@@ -128,7 +128,7 @@ public class IndexController extends AbstractBaseController {
 		response.setHeader("Cache-Control", "no-cache");
 		PrintWriter pw = response.getWriter();
 		// pw.write("{\"aaa\":\"" + value + "\"}");
-		
+
 		LinkedList<String> linked = new LinkedList<String>();
 		linked.add("aaa");
 		linked.add("abb");
@@ -161,6 +161,10 @@ public class IndexController extends AbstractBaseController {
     		value = "test";
     	} else {
     		value = "";
+    	}
+
+    	for(int i=0; i< 5; i++) {
+    		Thread.sleep(1000);
     	}
 
 		response.setContentType("application/json; charset=utf-8");
