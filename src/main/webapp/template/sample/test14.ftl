@@ -42,13 +42,7 @@ table#t01 th	{
 }
 
 .input-spinner {
-    background: #fff url('../../img/spinner.gif') no-repeat 100%;
     background: url('../../img/spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-    background: url('../../img/spinner.gif') no-repeat 100%, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/spinner.gif') no-repeat 100%, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/spinner.gif') no-repeat 100%, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/spinner.gif') no-repeat 100%, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
-    background: url('../../img/spinner.gif') no-repeat 100%, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
 }
 
 .input-search input {
@@ -63,21 +57,13 @@ table#t01 th	{
     font-size: 1em;
 
     border: 1px solid #aaa;
-    -webkit-border-radius: 0;
        -moz-border-radius: 0;
             border-radius: 0;
 
-    -webkit-box-shadow: none;
        -moz-box-shadow: none;
             box-shadow: none;
 
-    background: #fff url('../../img/search.png') no-repeat 100% -22px;
     background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-    background: url('../../img/search.png') no-repeat 100% -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/search.png') no-repeat 100% -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/search.png') no-repeat 100% -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%);
-    background: url('../../img/search.png') no-repeat 100% -22px, -ms-linear-gradient(top, #ffffff 85%, #eeeeee 99%);
-    background: url('../../img/search.png') no-repeat 100% -22px, linear-gradient(top, #ffffff 85%, #eeeeee 99%);
 }
 
 </style>
@@ -294,14 +280,31 @@ function captureReturnKey(e) {
     return false;
 } 
 
-function autoSearch(num) {
 
-	console.log("1");
+function exceptionKey(e) {
+    if(e.keyCode==37 || e.keyCode==38 || e.keyCode==39 || e.keyCode==40) {
+    	
+        return false;    	
+    }
+    return true;
+}
+
+var ajaxLastNum = 0;
+
+function autoSearch(e, num) {
+
+	if(!exceptionKey(e)) {
+		return false;
+	}
+	sleep(500);
+	console.log("1 - ajaxLastNum >>> " + ajaxLastNum);
 	$(document).ready(function() {
-		console.log("2");
 
 		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
 		var availableTags = [];
+		var currentAjaxNum = ajaxLastNum;
+
+		console.log("2 - currentAjaxNum >>> " + currentAjaxNum);
 
         $.ajax({
             type: 'GET',
@@ -313,6 +316,8 @@ function autoSearch(num) {
             beforeSend: function(xhr, settings) {
             	// $inputAname.attr('disabled', true);
 
+            	ajaxLastNum = ajaxLastNum + 1;
+
             	$('#search' + num).removeClass('input-search');
             	$('#search' + num).addClass('input-spinner');
 
@@ -322,29 +327,36 @@ function autoSearch(num) {
             	// inputHost.value = "loading...";
             },
             success: function(data, textStatus, request) {
-            	if(!isBlank(data.aaa)) {
-            		console.log(data.aaa);
-            		availableTags = data.aaa;
-            		// $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
-            		$('#statuses').html('<li>' + data.aaa + '</li>');
-            	} else {
-            		// $('#statuses').append('<li>' + data.aaa + '</li>');
-            		// $('#statuses').html('<li>No</li>');
-            	}
-            	var availableNames = [];
             	
-            	for (var i in availableTags) {
-            		availableNames[i] = availableTags[i].map1;
+            	if(currentAjaxNum == ajaxLastNum - 1) {
+                	
+                	if(!isBlank(data.aaa)) {
+                		console.log(data.aaa);
+                		availableTags = data.aaa;
+                		// $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
+                		$('#statuses').html('<li>' + data.aaa + '</li>');
+                	} else {
+                		// $('#statuses').append('<li>' + data.aaa + '</li>');
+                		// $('#statuses').html('<li>No</li>');
+                	}
+                	var availableNames = [];
+                	
+                	for (var i in availableTags) {
+                		availableNames[i] = availableTags[i].map1;
+                	}
+                	console.log(availableNames);
+                	$('form').find('input[name=aname]:eq(' + num + ')').autocomplete({source: availableNames});
+             		// $("#tags").autocomplete({source: availableTags});
+
+                	$('#search' + num).removeClass('input-spinner');
+                	$('#search' + num).addClass('input-search');
             	}
-            	console.log(availableNames);
-            	$('form').find('input[name=aname]:eq(' + num + ')').autocomplete({source: availableNames});
-         		// $("#tags").autocomplete({source: availableTags});
+
             },
             complete: function(xhr, textStatus) {
             	//$inputAname.attr('disabled', false);
 
-            	$('#search' + num).removeClass('input-spinner');
-            	$('#search' + num).addClass('input-search');
+
             },
             error: function(xhr, status) {
             	console.log(xhr.responseText);
@@ -363,8 +375,36 @@ function isBlank(str) {
     return (!str || /^\s*$/.test(str));
 }
 
-</script>
 
+var atime = 0;
+
+var previousTime = 0;
+
+function checkTime(dalayTime) {
+
+	console.log(">>1>>>");
+	var currentTime = new Date().getTime();
+	if(dalayTime > (currentTime - previousTime)) {
+		console.log(">>2>>>");
+		return false;
+	}
+	console.log(">>3>>>");
+	if(previousTime < currentTime) {
+		previousTime = currentTime;
+	}
+
+	return true;
+}
+
+/**
+ * Delay for a number of milliseconds
+ */
+function sleep(delay) {
+  var start = new Date().getTime();
+  while (new Date().getTime() < start + delay);
+}
+</script>
+<button onclick="return checkTime(3000);">test1</button>
 <button onclick="confirmData()">Check the validation</button>
 <br/><br/>
 <button type="button" id="addRow" onclick="addElement();">Add Some Elements</button>
@@ -384,7 +424,7 @@ function isBlank(str) {
 
 		<td width="30%">
 			<div id="search0" class="input-search">
-				<input type="text" name="aname" value="" style="border: 1px solid gray;" onkeyup="autoSearch(0);">
+				<input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" onkeyup="autoSearch(event, 0);">
 			</div>
 		</td>
 
