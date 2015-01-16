@@ -94,9 +94,44 @@ function resetId(tableName) {
 	}
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    // $('[data-toggle="popover"]').popover();
+    
+    ///$('#myTest').on('hidden.bs.tooltip', function () {
+    //	  console.log(">>>");
+    //})
+	
+    $('#myTest').on('focus',function() {
+    	console.log("a>>>");
+        $('#myTest').popover('show');
+    });
+    $('#myTest').on('focusout',function() {
+    	console.log("b>>>");
+        $('#myTest').popover('hide');
+    });
+
+});
+</script>
+
 // You have to same the increase number
 
 <br/><br/>
+
+<button type="button" class="btn btn-primary" data-toggle="popover" data-placement="top" title="Popover title" data-content="Default popover">Popover on top</button>
+<button type="button" class="btn btn-success" data-toggle="popover" data-placement="right" title="Popover title" data-content="Popover on right.">Popover on right</button>
+<button type="button" class="btn btn-info" data-toggle="popover" data-placement="bottom" title="Popover title" data-content="Popover on bottom.">Popover on bottom</button>
+<button type="button" class="btn btn-warning" data-toggle="popover" data-placement="left" title="Popover title" data-content="Popover on left.">Popover on left</button>
+
+
+<button type="button" class="btn btn-default" data-container="body" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+Popover on top
+</button>
+<br><br><br><br>
+<input type="text" id="myTest" name="name" value="" data-toggle="popover" data-trigger="focus" data-placement="top" title="Popover title" data-content="Default popover">
+
+<br><br><br>
+
 <button type="button" onclick="addElement('');">Add Some Elements</button>
 
 <div id="enquete"></div>

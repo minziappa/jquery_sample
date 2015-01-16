@@ -91,10 +91,10 @@ function addElement() {
 
 	  // Create cells
 	  var cell1 = row.insertCell(0);
-	  var cell2 = row.insertCell(1); 
+	  var cell2 = row.insertCell(1);
 	  var cell3 = row.insertCell(2);
 
-	  var inputHtml = '<input type="text" name="aname" value="" onkeyup="autoSearch('+ (trNum - 1) +');"/>';
+	  var inputHtml = '<div id="search'+ (trNum - 1) +'" class="input-search"><input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" onkeyup="autoSearch(event,'+ (trNum - 1) +');"/></div>';
 	  var selectHtml = '<select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
 	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Remove</button>';
 
@@ -159,6 +159,8 @@ function confirmData() {
 	  var table2 = document.getElementById("t02");
 
 	  var inputHtml;
+	  var inputTag;
+	  
 	  var selectHtml;
 	  var buttonHtml;
 	  for(i=0; i < cnt; i++) {
@@ -167,7 +169,9 @@ function confirmData() {
 		  var row1 = table1.rows[i+1];
 		  var row2 = table2.insertRow(i+1);
 
-		  inputHtml = row1.cells[0].firstChild.value;
+		  inputTag = row1.cells[0].getElementsByTagName("input");
+		  inputHtml = inputTag[0].value;
+
 		  var selected = row1.cells[1].firstChild.value;
 		  if(selected == 1) {
 			  selected = "A";
@@ -212,14 +216,18 @@ function getCellDataFromTable(tableName) {
 function validateForm() {
 
 	var inputs = document.getElementsByName("aname");
+
+	// how to convert javascript object to jquery object
+	var $inputs = $(inputs);
+	
 	// the button to add a row on the table.
 	var addRow = document.getElementById("addRow");
 	if(inputs.length == 0) {
-		  addRow.focus();
-		  addRow.style.border = "1px solid red";
-			return false;
+		addRow.focus();
+		addRow.style.border = "1px solid red";
+		return false;
 	} else {
-		  addRow.style.border = "";
+		addRow.style.border = "";
 	}
 
 	var cntInput = inputs.length;
@@ -234,6 +242,9 @@ function validateForm() {
 		        inputs[i].scrollIntoView();
 	    	}
 	        inputs[i].style.border = "1px solid red";
+
+	        $inputs.popover('show');
+
 	        isError = false;
 	    } else {
 	    	inputs[i].style.border = "";
@@ -296,11 +307,13 @@ function autoSearch(e, num) {
 	if(!exceptionKey(e)) {
 		return false;
 	}
+
 	sleep(500);
 	console.log("1 - ajaxLastNum >>> " + ajaxLastNum);
 	$(document).ready(function() {
 
 		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
+		$inputAname.popover('destroy');
 		var availableTags = [];
 		var currentAjaxNum = ajaxLastNum;
 
@@ -345,8 +358,7 @@ function autoSearch(e, num) {
                 		availableNames[i] = availableTags[i].map1;
                 	}
                 	console.log(availableNames);
-                	$('form').find('input[name=aname]:eq(' + num + ')').autocomplete({source: availableNames});
-             		// $("#tags").autocomplete({source: availableTags});
+                	$inputAname.autocomplete({source: availableNames});
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
@@ -403,6 +415,29 @@ function sleep(delay) {
   var start = new Date().getTime();
   while (new Date().getTime() < start + delay);
 }
+
+/*
+$(document).ready(function(){
+
+    $('input[name=aname]:eq(0)').on('focus',function() {
+    	console.log("a>>>");
+        $('input[name=aname]:eq(0)').popover('show');
+    });
+    $('input[name=aname]:eq(0)').on('focusout',function() {
+    	console.log("b>>>");
+        $('input[name=aname]:eq(0)').popover('hide');
+    });
+
+});
+*/
+
+
+function releasPopover(event) {
+	$jevent = $(event);
+	$jevent.popover('destroy');
+}
+
+
 </script>
 <button onclick="return checkTime(3000);">test1</button>
 <button onclick="confirmData()">Check the validation</button>
@@ -424,7 +459,7 @@ function sleep(delay) {
 
 		<td width="30%">
 			<div id="search0" class="input-search">
-				<input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" onkeyup="autoSearch(event, 0);">
+				<input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="autoSearch(event, 0);">
 			</div>
 		</td>
 
