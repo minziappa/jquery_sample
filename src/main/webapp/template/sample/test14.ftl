@@ -300,6 +300,17 @@ function exceptionKey(e) {
     return true;
 }
 
+var timeout;
+function interverKeystroke(e, num) {
+	console.log("time >>> 2");
+	clearTimeout(timeout);
+	console.log("time >>> 3");
+	timeout = setTimeout(function() {
+	  console.log("You stopped typing.");
+	  autoSearch(e, num);
+	}, 500);
+}
+
 var ajaxLastNum = 0;
 
 function autoSearch(e, num) {
@@ -307,12 +318,23 @@ function autoSearch(e, num) {
 	if(!exceptionKey(e)) {
 		return false;
 	}
+	
+	// if(!checkKeyCount(e, num)) {
+	//	return false;
+	// }
 
 	sleep(500);
 	console.log("1 - ajaxLastNum >>> " + ajaxLastNum);
 	$(document).ready(function() {
 
 		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
+
+		console.log("size - " + $inputAname.val().length);
+
+		if($inputAname.val().length < 2) {
+			return false;
+		}
+
 		$inputAname.popover('destroy');
 		var availableTags = [];
 		var currentAjaxNum = ajaxLastNum;
@@ -358,7 +380,24 @@ function autoSearch(e, num) {
                 		availableNames[i] = availableTags[i].map1;
                 	}
                 	console.log(availableNames);
-                	$inputAname.autocomplete({source: availableNames});
+                	/*
+                	$inputAname.autocomplete({source: availableNames, 
+                		select: function( event , ui ) {
+                			alert( "You selected: " + ui.item.label );
+                		}
+                	});
+                	*/
+                	
+                	$inputAname.autocomplete({source: availableNames, 
+                		autoFocus: true
+                	});
+
+                	//$inputAname.autocomplete({source: availableNames, 
+                	//	selectFirst: true
+                	//});
+                	
+                	
+                	// $inputAname.autocomplete({selectFirst: true});
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
@@ -459,7 +498,7 @@ function releasPopover(event) {
 
 		<td width="30%">
 			<div id="search0" class="input-search">
-				<input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="autoSearch(event, 0);">
+				<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="55%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event, 0);">
 			</div>
 		</td>
 

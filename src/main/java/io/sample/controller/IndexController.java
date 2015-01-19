@@ -163,7 +163,7 @@ public class IndexController extends AbstractBaseController {
     		value = "";
     	}
 
-    	for(int i=0; i< 5; i++) {
+    	for(int i=0; i< 1; i++) {
     		Thread.sleep(1000);
     	}
 
