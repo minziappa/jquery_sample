@@ -41,7 +41,25 @@ table#t01 th	{
     display: list-item;
 }
 
-.input-spinner {
+.input-spinner input {
+    width: 100%;
+	height: auto !important;
+	min-height: 26px;
+	padding: 4px 20px 4px 5px;
+	margin: 0;
+
+	outline: 0;
+	font-family: sans-serif;
+	font-size: 1em;
+
+	border: 1px solid #aaa;
+   -moz-border-radius: 0;
+        border-radius: 0;
+
+   -moz-box-shadow: none;
+        box-shadow: none;
+
+	
     background: url('../../img/spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
 }
 
@@ -63,7 +81,8 @@ table#t01 th	{
        -moz-box-shadow: none;
             box-shadow: none;
 
-    background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+    // background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
+	background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.35, white), color-stop(0.99, #eeeeee));
 }
 
 </style>
@@ -94,13 +113,15 @@ function addElement() {
 	  var cell2 = row.insertCell(1);
 	  var cell3 = row.insertCell(2);
 
-	  var inputHtml = '<div id="search'+ (trNum - 1) +'" class="input-search"><input type="text" name="aname" value="" style="border: 1px solid gray;" size="55%" onkeyup="autoSearch(event,'+ (trNum - 1) +');"/></div>';
+      var divStartHtml = '<div id="search'+ (trNum - 1) +'" class="input-search">';
+      var divEndHtml = '</div>';
+      var inputHtml = '<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ (trNum - 1) +');">';
 	  var selectHtml = '<select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
 	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Remove</button>';
 
 	  cell1.setAttribute('width', '30%');
 
-	  cell1.innerHTML = inputHtml,
+	  cell1.innerHTML = divStartHtml + inputHtml + divEndHtml,
 	  cell2.innerHTML = selectHtml,
 	  cell3.innerHTML = buttonHtml;
 }
@@ -130,8 +151,15 @@ function resetId(tableName) {
 	  var tr = table.getElementsByTagName("tr");
 	  var rows = tr.length - 1;
 
+	  var tagDivStart;
+	  var tagDivEnd;
+	  var inputHtml;
 	  for(i=0; i < rows; i++) {
 		  tr[i+1].id = i+1;
+	      tagDivStart = '<div id="search'+ i +'" class="input-search">';
+	      tagDivEnd = '</div>';
+	      tagInput = '<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ i +');">';
+	      table.rows[i+1].cells[0].innerHTML = tagDivStart + tagInput + tagDivEnd;
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Remove</button>';
 	  }
 }
@@ -318,13 +346,7 @@ function autoSearch(e, num) {
 	if(!exceptionKey(e)) {
 		return false;
 	}
-	
-	// if(!checkKeyCount(e, num)) {
-	//	return false;
-	// }
 
-	sleep(500);
-	console.log("1 - ajaxLastNum >>> " + ajaxLastNum);
 	$(document).ready(function() {
 
 		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
@@ -387,17 +409,11 @@ function autoSearch(e, num) {
                 		}
                 	});
                 	*/
-                	
-                	$inputAname.autocomplete({source: availableNames, 
-                		autoFocus: true
-                	});
 
-                	//$inputAname.autocomplete({source: availableNames, 
-                	//	selectFirst: true
-                	//});
-                	
-                	
-                	// $inputAname.autocomplete({selectFirst: true});
+                	$inputAname.autocomplete({source: availableNames, autoFocus: true, minLength: 0})
+                		.focus(function () {
+                			$(this).autocomplete("search");
+                	});
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
@@ -498,7 +514,7 @@ function releasPopover(event) {
 
 		<td width="30%">
 			<div id="search0" class="input-search">
-				<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="55%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event, 0);">
+				<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event, 0);">
 			</div>
 		</td>
 
