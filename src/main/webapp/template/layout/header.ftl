@@ -1,6 +1,8 @@
   <head>
 		<meta http-equiv="content-language" content="ja" />
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 	
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
 		<title>index</title>
 
 		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>

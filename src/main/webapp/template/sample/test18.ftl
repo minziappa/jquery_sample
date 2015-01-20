@@ -446,10 +446,32 @@ function autoSearch(e, num) {
                 	});
                 	*/
 
-                	$inputAname.autocomplete({source: availableNames, autoFocus: true, minLength: 0})
-                		.focus(function () {
-                			$(this).autocomplete("search");
-                	});
+                	var completeResults = [{ "permalink": "index.html", "image": "./images/noimg.png", "title": "This is a demo title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Another example of a title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Yet another random title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "The 2nd last title in our array" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Last title for the static example" }];
+                	
+                	$inputAname.autocomplete({source: completeResults, 
+                		width: $inputAname.outerWidth()-2,
+                		max: 5,
+                		scroll: false,
+                		dataType: "json",
+                		matchContains: "word",
+            			parse: function(data) {
+            				return $.map(data, function(row) {
+            					return {
+            						data: row,
+            						value: row.title,
+            						result: $inputAname.val()
+            					}
+            				});
+            			},
+                		autoFocus: true, 
+                		minLength: 0,
+            			formatItem: function(item) {				
+            					return format(item);
+            				}
+            			}).result(function(e, item) {
+            				$inputAname.val(title(item));
+            				//location.href = link(item);
+            			});
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
