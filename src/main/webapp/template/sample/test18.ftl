@@ -42,45 +42,6 @@ table#t01 th	{
 }
 
 .input-spinner input {
-	height: auto !important;
-	padding: 4px 20px 4px 5px;
-	margin: 0;
-
-	outline: 0;
-	font-family: sans-serif;
-	font-size: 1em;
-
-	border: 1px solid #aaa;
-   -moz-border-radius: 0;
-        border-radius: 0;
-
-   -moz-box-shadow: none;
-        box-shadow: none;
-
-	
-    background: url('../../img/spinner.gif') no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-}
-
-.input-search input {
-    height: auto !important;
-    padding: 4px 20px 4px 5px;
-    margin: 0;
-
-    outline: 0;
-    font-family: sans-serif;
-    font-size: 1em;
-
-    border: 1px solid #aaa;
-       -moz-border-radius: 0;
-            border-radius: 0;
-
-       -moz-box-shadow: none;
-            box-shadow: none;
-
-    background: url('../../img/search.png') no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
-}
-
-.input-spinner input {
    	background: url('../../img/spinner.gif') no-repeat 100% 5px;
 		background-color: white;
 
@@ -120,7 +81,6 @@ table#t01 th	{
             box-shadow: none;
 }
 
-
 </style>
 
 <script>
@@ -151,7 +111,7 @@ function addElement() {
 
       var divStartHtml = '<div id="search'+ (trNum - 1) +'" class="input-search">';
       var divEndHtml = '</div>';
-      var inputHtml = '<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ (trNum - 1) +');">';
+      var inputHtml = '<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ (trNum - 1) +');">';
 	  var selectHtml = '<select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
 	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Remove</button>';
 
@@ -194,7 +154,7 @@ function resetId(tableName) {
 		  tr[i+1].id = i+1;
 	      tagDivStart = '<div id="search'+ i +'" class="input-search">';
 	      tagDivEnd = '</div>';
-	      tagInput = '<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ i +');">';
+	      tagInput = '<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ i +');">';
 	      table.rows[i+1].cells[0].innerHTML = tagDivStart + tagInput + tagDivEnd;
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Remove</button>';
 	  }
@@ -206,7 +166,6 @@ function resetId(tableName) {
 function confirmData() {
 
 	  if(!validateForm()) {
-		  console.log(">>1>>");
 		  return;
 	  }
 
@@ -228,7 +187,6 @@ function confirmData() {
 	  var selectHtml;
 	  var buttonHtml;
 	  for(i=0; i < cnt; i++) {
-		  console.log(">>" + i);
 
 		  var row1 = table1.rows[i+1];
 		  var row2 = table2.insertRow(i+1);
@@ -295,15 +253,20 @@ function validateForm() {
 	}
 
 	var cntInput = inputs.length;
+	var blnPopover = true;
 
 	var isError = true;
 	for (i=0; i < cntInput; i++) {
 	    var x = inputs[i].value;
-	    console.log(">>3>>" + x.length);
+	    var $inputs = $(inputs[i]);
 	    if (x==null || x=="" || x.length > 10) {
 	    	if(isError) {
 		        inputs[i].focus();
 		        inputs[i].scrollIntoView();
+    			if(blnPopover) {
+    				$inputs.popover('show');
+		    		blnPopover = false;
+    			}
 	    	}
 	        inputs[i].style.border = "1px solid red";
 
@@ -318,7 +281,6 @@ function validateForm() {
 	var cntState = state.length;
 	for (i=0; i < cntState; i++) {
 	    var x = state[i].value;
-	    console.log(">>4>>" + x.length);
 	    if (x==null || x=="" || x=="0") {
 	    	if(isError) {
 	    		state[i].focus();
@@ -366,9 +328,7 @@ function exceptionKey(e) {
 
 var timeout;
 function interverKeystroke(e, num) {
-	console.log("time >>> 2");
 	clearTimeout(timeout);
-	console.log("time >>> 3");
 	timeout = setTimeout(function() {
 	  console.log("You stopped typing.");
 	  autoSearch(e, num);
@@ -387,8 +347,6 @@ function autoSearch(e, num) {
 
 		var $inputAname = $('form').find('input[name=aname]:eq(' + num + ')');
 
-		console.log("size - " + $inputAname.val().length);
-
 		if($inputAname.val().length < 2) {
 			return false;
 		}
@@ -397,27 +355,19 @@ function autoSearch(e, num) {
 		var availableTags = [];
 		var currentAjaxNum = ajaxLastNum;
 
-		console.log("2 - currentAjaxNum >>> " + currentAjaxNum);
-
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: 'http://localhost:9000/sample/ajaxGet2',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: "json",
             data: 'body={ "text" : "' + $inputAname.val() + '"}',
             cache: false,
             beforeSend: function(xhr, settings) {
-            	// $inputAname.attr('disabled', true);
 
             	ajaxLastNum = ajaxLastNum + 1;
 
             	$('#search' + num).removeClass('input-search');
             	$('#search' + num).addClass('input-spinner');
-
-            	// $inputHost.val("loading...");
-            	//$inputHost.addClass('loading');
-            	console.log(">>> selected >>" + $inputAname.val());
-            	// inputHost.value = "loading...";
             },
             success: function(data, textStatus, request) {
             	
@@ -426,52 +376,77 @@ function autoSearch(e, num) {
                 	if(!isBlank(data.aaa)) {
                 		console.log(data.aaa);
                 		availableTags = data.aaa;
-                		// $('form').find('input[name=aname]:eq(' + num + ')').val(data.aaa);
                 		$('#statuses').html('<li>' + data.aaa + '</li>');
-                	} else {
-                		// $('#statuses').append('<li>' + data.aaa + '</li>');
-                		// $('#statuses').html('<li>No</li>');
                 	}
                 	var availableNames = [];
-                	
+
                 	for (var i in availableTags) {
                 		availableNames[i] = availableTags[i].map1;
                 	}
                 	console.log(availableNames);
-                	/*
-                	$inputAname.autocomplete({source: availableNames, 
-                		select: function( event , ui ) {
-                			alert( "You selected: " + ui.item.label );
-                		}
-                	});
-                	*/
 
-                	var completeResults = [{ "permalink": "index.html", "image": "./images/noimg.png", "title": "This is a demo title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Another example of a title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Yet another random title" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "The 2nd last title in our array" }, { "permalink": "index.html", "image": "./images/noimg.png", "title": "Last title for the static example" }];
-                	
-                	$inputAname.autocomplete({source: completeResults, 
-                		width: $inputAname.outerWidth()-2,
-                		max: 5,
-                		scroll: false,
-                		dataType: "json",
-                		matchContains: "word",
-            			parse: function(data) {
-            				return $.map(data, function(row) {
-            					return {
-            						data: row,
-            						value: row.title,
-            						result: $inputAname.val()
-            					}
-            				});
-            			},
+                	$inputAname.autocomplete();
+
+                    // Close if already visible
+                	if ($inputAname.autocomplete("widget").is(":visible")) {
+                		$inputAname.autocomplete("close");
+                		return false;
+                	}
+
+                	$inputAname.autocomplete({source: availableNames, 
                 		autoFocus: true, 
-                		minLength: 0,
-            			formatItem: function(item) {				
-            					return format(item);
-            				}
-            			}).result(function(e, item) {
-            				$inputAname.val(title(item));
-            				//location.href = link(item);
-            			});
+                		minLength: 1,
+                		create: function( event, ui ) {
+                			console.log(" create >> ");
+                		    if($(this).autocomplete('widget').is(':visible')) {
+                		    	console.log(" create >> visible");
+                		    } else {
+                		    	console.log(" create >> desable");
+                		    }
+                			return true;
+                		},
+                		close: function( event, ui ) {
+                			console.log(" close >> desable");
+                		},
+                		open: function( event, ui ) {
+                			console.log(" open >> ");
+                			return true;
+                		},
+                		search: function( event, ui ) {
+                			console.log(" search >> ");
+                			return true;
+                		},
+                		focus: function( event, ui ) {
+                			console.log(" focus >> " + ui.item.value);
+                			
+                			// $(this).autocomplete("search");
+                			return true;
+                		},
+                		select: function( event, ui ) {
+                			console.log(" select >> " + ui.item.value);
+/*
+                			// remove the current input
+                			terms.pop();
+                			// add the selected item
+                			terms.push( ui.item.value );
+                			// add placeholder to get the comma-and-space at the end
+                			terms.push("");
+                			this.value = terms.join(", ");
+*/
+                			return true;
+                		},
+                		_renderItem: function( ul, item ) {
+                			console.log(" _renderItem >> " + ui.item.value);
+                			
+                			//return $( "<li>" ).attr( "data-value", item.value ).append( item.label ).appendTo( ul );
+                		}
+                	}).focus(function () {
+                		$(this).autocomplete("search");
+            		});
+
+    	            // fire search event
+                	$inputAname.autocomplete("search", "");
+                	$inputAname.focus();
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
@@ -572,7 +547,7 @@ function releasPopover(event) {
 
 		<td width="30%">
 			<div id="search0" class="input-search">
-				<input type="text" name="aname" value="" autocomplete="off" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event, 0);">
+				<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeydown="interverKeystroke(event, 0);">
 			</div>
 		</td>
 
@@ -597,7 +572,7 @@ function releasPopover(event) {
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
-      
+
       <div class="modal-body">
 	  	<table id="t02">
 	  		<tr>

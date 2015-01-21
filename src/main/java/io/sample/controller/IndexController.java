@@ -163,9 +163,9 @@ public class IndexController extends AbstractBaseController {
     		value = "";
     	}
 
-    	for(int i=0; i< 1; i++) {
-    		Thread.sleep(1000);
-    	}
+//    	for(int i=0; i< 1; i++) {
+//    		Thread.sleep(1000);
+//    	}
 
 		response.setContentType("application/json; charset=utf-8");
 		response.setHeader("Cache-Control", "no-cache");
