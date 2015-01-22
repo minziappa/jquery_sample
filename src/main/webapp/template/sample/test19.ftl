@@ -81,6 +81,21 @@ table#t01 th	{
             box-shadow: none;
 }
 
+
+li {
+	line-height: 20px;
+	display: list-item;
+	text-align: -webkit-match-parent;
+}
+
+.auto-menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	outline: none;
+	border: 1px solid #aaaaaa;
+}
+
 </style>
 
 <script>
@@ -335,6 +350,39 @@ function interverKeystroke(e, num) {
 	}, 500);
 }
 
+
+function createList(tableName, i, availableNames) {
+	  var table = document.getElementById(tableName);
+	  var tr = table.getElementsByTagName("tr");
+	  var rows = tr.length - 1;
+
+	  var tcell = table.rows[i+1].cells[0];
+
+	  var node = tcell.getElementsByTagName("ul");
+	  console.log("1>" + tcell.childNodes[0]);
+	  
+	  var eul = document.createElement("ul");
+	  // Single classname
+	  // eul.className='newClassName';
+	  // Plural classname
+	  eul.classList.add('auto-menu');
+
+	  for(var j=0; j< availableNames.length; j++) {
+		  var eli = document.createElement("li");
+		  var node = document.createTextNode(availableNames[j]);
+		  eli.appendChild(node);
+		  eul.appendChild(eli);
+	  }
+	  //tcell.appendChild(eul);
+	  if(node === undefined || node === null) {
+		  tcell.appendChild(eul);
+		  console.log("1>" + tcell.childNodes[0]);
+	  } else {
+		  console.log("2>" + node);
+		  tcell.replaceChild(eul, node);
+	  }
+}
+
 var ajaxLastNum = 0;
 
 function autoSearch(e, num) {
@@ -383,74 +431,12 @@ function autoSearch(e, num) {
                 	for (var i in availableTags) {
                 		availableNames[i] = availableTags[i].map1;
                 	}
-                	
                 	console.log(availableNames);
 
-                	$inputAname.autocomplete();
+                	var position = $inputAname.position();
+                	console.log( "left: " + position.left + ", top: " + position.top );
 
-                    // Close if already visible
-                	if ($inputAname.autocomplete("widget").is(":visible")) {
-                		$inputAname.autocomplete("close");
-                		return false;
-                	}
-
-                	$inputAname.autocomplete({source: availableTags, 
-                		autoFocus: true, 
-                		minLength: 0,
-                		create: function( event, ui ) {
-                			console.log(" create >> ");
-                		    if($(this).autocomplete('widget').is(':visible')) {
-                		    	console.log(" create >> visible");
-                		    } else {
-                		    	console.log(" create >> desable");
-                		    }
-                			return true;
-                		},
-                		close: function( event, ui ) {
-                			console.log(" close >> desable");
-                		},
-                		open: function( event, ui ) {
-                			console.log(" open >> ");
-                			return true;
-                		},
-                		search: function( event, ui ) {
-                			console.log(" search >> ");
-                			return true;
-                		},
-                		focus: function( event, ui ) {
-                			console.log(" focus >> " + ui.item.value);
-                			
-                			// $(this).autocomplete("search");
-                			return true;
-                		},
-                		select: function( event, ui ) {
-                			console.log(" select >> " + ui.item.map1);
-                			$inputAname.val( ui.item.map1 );
-                			return false;
-                		},
-                		_renderItem: function( ul, item ) {
-                			console.log(" _renderItem >> " + ui.item.value);
-                			
-                			//return $( "<li>" ).attr( "data-value", item.value ).append( item.label ).appendTo( ul );
-                		},
-                		_resizeMenu: function() {
-                			console.log(" _resizeMenu >> " + ui.item.value);
-                			// this.menu.element.outerWidth( 50000 );
-                		}
-                	})
-                	.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-                        return $( "<li>" ).attr( "data-value", item.map1 )
-                        .append( item.map1 + ", " + item.map2 + '<img id="img1" src="/img/spinner.gif" height="80" width="80">' )
-                        .appendTo( ul );
-                    };
-
-                	//focus(function () {
-                	//	$(this).autocomplete("search");
-            		//});
-
-    	            // fire search event
-                	$inputAname.autocomplete("search", "");
-                	$inputAname.focus();
+                	createList("t01", num, availableNames);
 
                 	$('#search' + num).removeClass('input-spinner');
                 	$('#search' + num).addClass('input-search');
@@ -486,16 +472,10 @@ var previousTime = 0;
 
 function checkTime(dalayTime) {
 
-	console.log(">>1>>>");
-	var currentTime = new Date().getTime();
-	if(dalayTime > (currentTime - previousTime)) {
-		console.log(">>2>>>");
-		return false;
-	}
-	console.log(">>3>>>");
-	if(previousTime < currentTime) {
-		previousTime = currentTime;
-	}
+	var adiv = document.getElementById('ul')
+	var ali = '<li class="ui-menu-item" id="ui-id-6" tabindex="-1">value1</li>';
+
+	adiv.innerHTML = ali;
 
 	return true;
 }
@@ -508,30 +488,32 @@ function sleep(delay) {
   while (new Date().getTime() < start + delay);
 }
 
-/*
-$(document).ready(function(){
-
-    $('input[name=aname]:eq(0)').on('focus',function() {
-    	console.log("a>>>");
-        $('input[name=aname]:eq(0)').popover('show');
-    });
-    $('input[name=aname]:eq(0)').on('focusout',function() {
-    	console.log("b>>>");
-        $('input[name=aname]:eq(0)').popover('hide');
-    });
-
-});
-*/
-
+function checkStatus(e, num) {
+	var eState = document.getElementsByName('state')[num];
+	if (e.value == "test1") {
+		eState.value = "test1";
+		//eHost.disabled = true;
+		eState.readOnly = true;
+	} else if(e.value == "test2") {
+		eState.value = "test2";
+		//eHost.disabled = true;
+		eState.readOnly = true;
+	} else {
+		eState.value = "";
+		//eHost.disabled = false;
+		eState.readOnly = false;
+	}
+}
 
 function releasPopover(event) {
 	$jevent = $(event);
 	$jevent.popover('destroy');
 }
 
-
 </script>
-<img id="img1" src="/img/spinner.gif">
+
+<img id="img1" src="/img/spinner.gif" alt="Smiley face">
+
 <button onclick="return checkTime(3000);">test1</button>
 <button onclick="confirmData()">Check the validation</button>
 <br/><br/>

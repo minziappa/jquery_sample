@@ -179,8 +179,12 @@ public class IndexController extends AbstractBaseController {
 		Map<String, String> map2 = new LinkedHashMap<String, String>();
 		map2.put("map1", "value21");
 		map2.put("map2", "value22");
+		Map<String, String> map3 = new LinkedHashMap<String, String>();
+		map3.put("map1", "txx1");
+		map3.put("map2", "txx2");
 		linked.add(map1);
 		linked.add(map2);
+		linked.add(map3);
 
 		Map<String, LinkedList<Map<String, String>>> map = new LinkedHashMap<String, LinkedList<Map<String, String>>>();
 		map.put("aaa", linked);
