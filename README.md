@@ -8,5 +8,7 @@ http://getbootstrap.com/javascript/
 http://maczniak.github.io/bootstrap/javascript.html#overview
 
 Autocomplete
+
 http://www.webdesignerdepot.com/2012/05/foxycomplete-advanced-autocomplete-search-images/
 
+http://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
