@@ -419,23 +419,14 @@ function autoSearch(e, num) {
                 		},
                 		focus: function( event, ui ) {
                 			console.log(" focus >> " + ui.item.value);
-                			
+                			$inputAname.val( ui.item.name );
                 			// $(this).autocomplete("search");
-                			return true;
+                			return false;
                 		},
                 		select: function( event, ui ) {
                 			console.log(" select >> " + ui.item.map1);
                 			$inputAname.val( ui.item.map1 );
                 			return false;
-                		},
-                		_renderItem: function( ul, item ) {
-                			console.log(" _renderItem >> " + ui.item.value);
-                			
-                			//return $( "<li>" ).attr( "data-value", item.value ).append( item.label ).appendTo( ul );
-                		},
-                		_resizeMenu: function() {
-                			console.log(" _resizeMenu >> " + ui.item.value);
-                			// this.menu.element.outerWidth( 50000 );
                 		}
                 	})
                 	.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
