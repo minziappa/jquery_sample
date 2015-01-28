@@ -370,7 +370,10 @@ function autoSearch(e, num) {
             	$('#search' + num).addClass('input-spinner');
             },
             success: function(data, textStatus, request) {
-            	
+
+            	$('#search' + num).removeClass('input-spinner');
+            	$('#search' + num).addClass('input-search');
+
             	if(currentAjaxNum == ajaxLastNum - 1) {
                 	
                 	if(!isBlank(data.aaa)) {
@@ -435,16 +438,10 @@ function autoSearch(e, num) {
                         .appendTo( ul );
                     };
 
-                	//focus(function () {
-                	//	$(this).autocomplete("search");
-            		//});
-
     	            // fire search event
                 	$inputAname.autocomplete("search", "");
                 	$inputAname.focus();
 
-                	$('#search' + num).removeClass('input-spinner');
-                	$('#search' + num).addClass('input-search');
             	}
 
             },
