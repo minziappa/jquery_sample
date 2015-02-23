@@ -23,4 +23,6 @@ function getImgSize(imgSrc){
 <img id="imgId01" src="/img/search.png" onclick="getImgSize('/img/search.png');">
 <br><br>
 
+
+
 </@layout.myLayout>
