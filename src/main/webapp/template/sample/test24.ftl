@@ -81,21 +81,6 @@ table#t01 th	{
             box-shadow: none;
 }
 
-
-li {
-	line-height: 20px;
-	display: list-item;
-	text-align: -webkit-match-parent;
-}
-
-.auto-menu {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	outline: none;
-	border: 1px solid #aaaaaa;
-}
-
 </style>
 
 <script>
@@ -126,13 +111,16 @@ function addElement() {
 
       var divStartHtml = '<div id="search'+ (trNum - 1) +'" class="input-search">';
       var divEndHtml = '</div>';
+      var selectOptionHtml = '<select name="hostOption" style="width:85px; margin-bottom: 0;" onchange="checkStatus(this,' + (trNum-1) + ');"><option value="personal">input</option><option value="take_turns">take turns</option><option value="unknown">unknown</option></select>';
       var inputHtml = '<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ (trNum - 1) +');">';
-	  var selectHtml = '<select name="state"><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
+	  var selectHtml = '<select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select>';
 	  var buttonHtml = '<button type="button" onclick=\'removeElement("'+trNum+'")\'>Remove</button>';
 
-	  cell1.setAttribute('width', '30%');
+	  cell1.setAttribute('width', '50%');
+	  cell2.setAttribute('width', '30%');
+	  cell3.setAttribute('width', '20%');
 
-	  cell1.innerHTML = divStartHtml + inputHtml + divEndHtml,
+	  cell1.innerHTML = divStartHtml + selectOptionHtml + inputHtml + divEndHtml,
 	  cell2.innerHTML = selectHtml,
 	  cell3.innerHTML = buttonHtml;
 }
@@ -154,6 +142,29 @@ function removeElement(trNum) {
 }
 
 /*
+ * Set to read only
+ */
+function setStatusInput(value, inputTag) {
+	if (value == "take_turns" || value == "unknown") {
+			inputTag.readOnly = true;
+	}
+}
+
+/*
+ * Set the status from other action
+ */
+function setStatusSelect(value) {
+
+	if (value == "take_turns") {
+		return '<option value="personal">Input</option><option value="take_turns" selected>take turns</option><option value="unknown">unknown</option>';
+	} else if(value == "personal") {
+		return '<option value="personal" selected>Input</option><option value="take_turns">take turns</option><option value="unknown">unknown</option>';
+	} else {
+		return '<option value="personal">Input</option><option value="take_turns">take turns</option><option value="unknown" selected>unknown</option>';
+	}
+}
+
+/*
  * Order the number on TR of the table
  */
 function resetId(tableName) {
@@ -165,12 +176,24 @@ function resetId(tableName) {
 	  var tagDivStart;
 	  var tagDivEnd;
 	  var inputHtml;
+
 	  for(i=0; i < rows; i++) {
 		  tr[i+1].id = i+1;
+
 	      tagDivStart = '<div id="search'+ i +'" class="input-search">';
 	      tagDivEnd = '</div>';
-	      tagInput = '<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ i +');">';
-	      table.rows[i+1].cells[0].innerHTML = tagDivStart + tagInput + tagDivEnd;
+
+	      // cells[0] - first column
+		  var selectTag = table.rows[i+1].cells[0].getElementsByTagName("select");
+		  var selectValue = selectTag[0].value;
+		  var inputTag = table.rows[i+1].cells[0].getElementsByTagName("input");
+		  var inputValue = inputTag[0].value;
+
+	      tagSelect = '<select name="hostOption" style="width:85px; margin-bottom: 0;" onchange="checkStatus(this,' + i + ');">' + setStatusSelect(selectValue) + '</select>';
+	      tagInput = '<input type="text" name="aname" value="' + inputValue + '" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeyup="interverKeystroke(event,'+ i +');">';
+	      table.rows[i+1].cells[0].innerHTML = tagDivStart + tagSelect + tagInput + tagDivEnd;
+		  setStatusInput(selectValue, inputTag[0]);
+
 		  table.rows[i+1].cells[2].innerHTML = '<button type="button" onclick=\'removeElement("'+(i+1)+'")\'>Remove</button>';
 	  }
 }
@@ -350,39 +373,6 @@ function interverKeystroke(e, num) {
 	}, 500);
 }
 
-
-function createList(tableName, i, availableNames) {
-	  var table = document.getElementById(tableName);
-	  var tr = table.getElementsByTagName("tr");
-	  var rows = tr.length - 1;
-
-	  var tcell = table.rows[i+1].cells[0];
-
-	  var node = tcell.getElementsByTagName("ul");
-	  console.log("1>" + tcell.childNodes[0]);
-	  
-	  var eul = document.createElement("ul");
-	  // Single classname
-	  // eul.className='newClassName';
-	  // Plural classname
-	  eul.classList.add('auto-menu');
-
-	  for(var j=0; j< availableNames.length; j++) {
-		  var eli = document.createElement("li");
-		  var node = document.createTextNode(availableNames[j]);
-		  eli.appendChild(node);
-		  eul.appendChild(eli);
-	  }
-	  //tcell.appendChild(eul);
-	  if(node === undefined || node === null) {
-		  tcell.appendChild(eul);
-		  console.log("1>" + tcell.childNodes[0]);
-	  } else {
-		  console.log("2>" + node);
-		  // tcell.replaceChild(eul, node);
-	  }
-}
-
 var ajaxLastNum = 0;
 
 function autoSearch(e, num) {
@@ -418,7 +408,10 @@ function autoSearch(e, num) {
             	$('#search' + num).addClass('input-spinner');
             },
             success: function(data, textStatus, request) {
-            	
+
+            	$('#search' + num).removeClass('input-spinner');
+            	$('#search' + num).addClass('input-search');
+
             	if(currentAjaxNum == ajaxLastNum - 1) {
                 	
                 	if(!isBlank(data.aaa)) {
@@ -431,15 +424,62 @@ function autoSearch(e, num) {
                 	for (var i in availableTags) {
                 		availableNames[i] = availableTags[i].map1;
                 	}
+                	
                 	console.log(availableNames);
 
-                	var position = $inputAname.position();
-                	console.log( "left: " + position.left + ", top: " + position.top );
+                	$inputAname.autocomplete();
 
-                	createList("t01", num, availableNames);
+                    // Close if already visible
+                	if ($inputAname.autocomplete("widget").is(":visible")) {
+                		$inputAname.autocomplete("close");
+                		return false;
+                	}
 
-                	$('#search' + num).removeClass('input-spinner');
-                	$('#search' + num).addClass('input-search');
+                	$inputAname.autocomplete({source: availableTags, 
+                		autoFocus: true, 
+                		minLength: 0,
+                		create: function( event, ui ) {
+                			console.log(" create >> ");
+                		    if($(this).autocomplete('widget').is(':visible')) {
+                		    	console.log(" create >> visible");
+                		    } else {
+                		    	console.log(" create >> desable");
+                		    }
+                			return true;
+                		},
+                		close: function( event, ui ) {
+                			console.log(" close >> desable");
+                		},
+                		open: function( event, ui ) {
+                			console.log(" open >> ");
+                			return true;
+                		},
+                		search: function( event, ui ) {
+                			console.log(" search >> ");
+                			return true;
+                		},
+                		focus: function( event, ui ) {
+                			console.log(" focus >> " + ui.item.value);
+                			$inputAname.val( ui.item.name );
+                			// $(this).autocomplete("search");
+                			return false;
+                		},
+                		select: function( event, ui ) {
+                			console.log(" select >> " + ui.item.map1);
+                			$inputAname.val( ui.item.map1 );
+                			return false;
+                		}
+                	})
+                	.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                        return $( "<li>" ).attr( "data-value", item.map1 )
+                        .append( item.map1 + ", " + item.map2 + '<img id="img1" src="/img/spinner.gif" height="80" width="80">' )
+                        .appendTo( ul );
+                    };
+
+    	            // fire search event
+                	$inputAname.autocomplete("search", "");
+                	$inputAname.focus();
+
             	}
 
             },
@@ -465,44 +505,21 @@ function isBlank(str) {
     return (!str || /^\s*$/.test(str));
 }
 
-
-var atime = 0;
-
-var previousTime = 0;
-
-function checkTime(dalayTime) {
-
-	var adiv = document.getElementById('ul')
-	var ali = '<li class="ui-menu-item" id="ui-id-6" tabindex="-1">value1</li>';
-
-	adiv.innerHTML = ali;
-
-	return true;
-}
-
-/**
- * Delay for a number of milliseconds
+/*
+ * Selecting a option.
  */
-function sleep(delay) {
-  var start = new Date().getTime();
-  while (new Date().getTime() < start + delay);
-}
-
 function checkStatus(e, num) {
-	var eState = document.getElementsByName('state')[num];
-	if (e.value == "test1") {
-		eState.value = "test1";
-		//eHost.disabled = true;
-		eState.readOnly = true;
-	} else if(e.value == "test2") {
-		eState.value = "test2";
-		//eHost.disabled = true;
-		eState.readOnly = true;
-	} else {
-		eState.value = "";
-		//eHost.disabled = false;
-		eState.readOnly = false;
-	}
+		var eHost = document.getElementsByName('aname')[num];
+		if (e.value == "take_turns") {
+			eHost.value = "Take turns";
+			eHost.readOnly = true;
+		} else if(e.value == "unknown") {
+			eHost.value = "Unknown";
+			eHost.readOnly = true;
+		} else {
+			eHost.value = "";
+			eHost.readOnly = false;
+		}
 }
 
 function releasPopover(event) {
@@ -511,13 +528,9 @@ function releasPopover(event) {
 }
 
 </script>
-
-<img id="img1" src="/img/spinner.gif" alt="Smiley face">
-
-<button onclick="return checkTime(3000);">test1</button>
-<button onclick="confirmData()">Check the validation</button>
 <br/><br/>
 <button type="button" id="addRow" onclick="addElement();">Add Some Elements</button>
+<button onclick="confirmData()">Check the validation</button>
 <div>
 <ul id="statuses"></ul>
 </div>
@@ -531,15 +544,18 @@ function releasPopover(event) {
 	  <th>Button</th>
 	</tr>
 	<tr id="1">
-
-		<td width="30%">
+		<td width="50%">
 			<div id="search0" class="input-search">
+				<select name="hostOption" style="width:85px; margin-bottom: 0;" onchange="checkStatus(this,0);">
+					<option value="personal">Input</option><option value="take_turns">Take turns</option><option value="unknown">Unknown</option>
+				</select>
 				<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeydown="interverKeystroke(event, 0);">
 			</div>
+
 		</td>
 
-		<td><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
-		<td><button type="button" onclick="removeElement(1)">Remove</button></td>
+		<td width="30%"><select name="state"><option value="0"> </option><option value="1">A</option><option value="2">B</option><option value="3">C</option></select></td>
+		<td width="20%"><button type="button" onclick="removeElement(1)">Remove</button></td>
 	</tr>
 	</table>
 </form>
