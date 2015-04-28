@@ -12,3 +12,6 @@ Autocomplete
 http://www.webdesignerdepot.com/2012/05/foxycomplete-advanced-autocomplete-search-images/
 
 http://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
+
+Captcha
+http://akiraly.github.io/cage/index.html

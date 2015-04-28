@@ -37,6 +37,7 @@ dependencies {
 	compile "org.springmodules:spring-modules-jakarta-commons:0.8"
 	compile "org.freemarker:freemarker:2.3.17"
 	compile "com.googlecode.json-simple:json-simple:1.1.1"
+	compile "com.github.cage:cage:1.0"
 	provided "org.apache.tomcat:servlet-api:6.0.33"
     testCompile "junit:junit:4.+"
 }
