@@ -4,7 +4,7 @@
 <style type="text/css">
 body {
     background-color: #FFF;
-    margin: 30px;
+    margin: 20px;
     margin-top: 10px;
 }
 #contentContainer {
@@ -64,6 +64,7 @@ function getPosition(element) {
     var xPosition = 0;
     var yPosition = 0;
 
+    console.log("offsetLeft >> "+ element.offsetLeft);
     while (element) {
         xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
         yPosition += (element.offsetTop - element.scrollTop + element.clientTop);

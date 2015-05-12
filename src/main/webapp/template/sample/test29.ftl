@@ -1,55 +1,58 @@
 <#import "../layout/bootstrapLayout.ftl" as layout>
 <@layout.myLayout>
 
+<script src="/js/lib/jquery.Jcrop.js"></script>
 <script type="text/javascript">
-	document.onmousemove = mouseMove;
-	document.onmouseup   = mouseUp; 
-	var dragObject  = null; 
-	var mouseOffset = null; 
-	function getMouseOffset(target, ev){ 
-		ev = ev || window.event; 
-		var docPos    = getPosition(target); 
-		var mousePos  = mouseCoords(ev); 
-		return {x:mousePos.x - docPos.x, y:mousePos.y - docPos.y}; 
-	} 
-	function getPosition(e){ 
-		var left = 0; 
-		var top  = 0; 
-		while (e.offsetParent){ 
-			left += e.offsetLeft; 
-			top  += e.offsetTop; 
-			e     = e.offsetParent; 
-		} 
-		left += e.offsetLeft; 
-		top  += e.offsetTop; 
-		return {x:left, y:top}; 
-	} 
-	function mouseMove(ev){ 
-		ev           = ev || window.event; 
-		var mousePos = mouseCoords(ev); 
-		if(dragObject){ 
-			dragObject.style.position = 'absolute'; 
-			dragObject.style.top      = mousePos.y - mouseOffset.y; 
-			dragObject.style.left     = mousePos.x - mouseOffset.x; 
-			return false; 
-		}
-	}
-	function mouseUp(){ 
-		dragObject = null; 
-	}
-	function makeDraggable(item){ 
-		if(!item) return; 
-		item.onmousedown = function(ev){ 
-			dragObject  = this; 
-			mouseOffset = getMouseOffset(this, ev); 
-			return false; 
-		}
-	}
+  jQuery(function($){
+
+    // How easy is this??
+    $('#target').Jcrop();
+
+  });
+
 </script>
+<link rel="stylesheet" href="demo_files/main.css" type="text/css" />
+<link rel="stylesheet" href="demo_files/demos.css" type="text/css" />
+<link rel="stylesheet" href="/css/lib/jquery.Jcrop.css" type="text/css" />
 
-<h2>Javascript Picture</h2>
-Click the following image.
+<div class="container">
+<div class="row">
+<div class="span12">
+<div class="jc-demo-box">
 
-<img draggable="false" id="img01" src="/img/icon.jpg" alt="Smiley face" height="42" width="42"/>
+<div class="page-header">
+<ul class="breadcrumb first">
+  <li><a href="../index.html">Jcrop</a> <span class="divider">/</span></li>
+  <li><a href="../index.html">Demos</a> <span class="divider">/</span></li>
+  <li class="active">Hello World</li>
+</ul>
+<h1>Hello World</h1>
+</div>
+
+  <img src="/css/demo_files/sago.jpg" id="target" alt="[Jcrop Example]" />
+
+  <div class="description">
+  <p>
+    <b>This example demonstrates the default behavior of Jcrop.</b><br />
+    Since no event handlers have been attached it only performs
+    the cropping behavior.
+  </p>
+  </div>
+
+<div class="tapmodo-footer">
+  <a href="http://tapmodo.com" class="tapmodo-logo segment">tapmodo.com</a>
+  <div class="segment"><b>&copy; 2008-2013 Tapmodo Interactive LLC</b><br />
+    Jcrop is free software released under <a href="../MIT-LICENSE.txt">MIT License</a>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+
+</div>
+</div>
+</div>
+</div>
+
+
 
 </@layout.myLayout>
