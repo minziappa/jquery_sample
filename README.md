@@ -15,3 +15,9 @@ http://www.tutorialspoint.com/jqueryui/jqueryui_autocomplete.htm
 
 Captcha
 http://akiraly.github.io/cage/index.html
+
+Tool
+http://komodoide.com/
+
+Just Idea
+API Specification for developer.
