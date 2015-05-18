@@ -1,7 +1,18 @@
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE')
+		classpath ('com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.+')
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'jettyEclipse'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -17,6 +28,16 @@ jar {
 repositories {
     mavenCentral()
 }
+
+/*
+compileTestJava {
+	options.encoding = 'UTF-8'
+}
+compileJava {
+	options.encoding = 'UTF-8'
+}
+*/
+
 // For provided jars
 configurations {
 	provided
@@ -29,11 +50,11 @@ dependencies {
 	runtime "org.slf4j:jcl-over-slf4j:1.7.5"
 	compile "ch.qos.logback:logback-core:1.0.13"
 	compile "ch.qos.logback:logback-classic:1.0.13"
-    compile "org.springframework:spring-core:3.1.4.RELEASE"
-	compile "org.springframework:spring-aop:3.1.4.RELEASE"
-	compile "org.springframework:spring-beans:3.1.4.RELEASE"
-	compile "org.springframework:spring-web:3.1.4.RELEASE"
-	compile "org.springframework:spring-webmvc:3.1.4.RELEASE"
+    compile "org.springframework:spring-core:4.1.6.RELEASE"
+	compile "org.springframework:spring-aop:4.1.6.RELEASE"
+	compile "org.springframework:spring-beans:4.1.6.RELEASE"
+	compile "org.springframework:spring-web:4.1.6.RELEASE"
+	compile "org.springframework:spring-webmvc:4.1.6.RELEASE"
 	compile "org.springmodules:spring-modules-jakarta-commons:0.8"
 	compile "org.freemarker:freemarker:2.3.17"
 	compile "com.googlecode.json-simple:json-simple:1.1.1"
@@ -42,12 +63,21 @@ dependencies {
     testCompile "junit:junit:4.+"
 }
 
-jettyRun {
+/*
+ * http://www.sonarqube.org/downloads/
+# Gradle
+export GRADLE_HOME=/Users/user_name/gradle
+export PATH=$GRADLE_HOME/bin:$PATH
+# If the contents are garbled, you must put the following option.
+export GRADLE_OPTS="-Dfile.encoding=UTF-8 -Xmx512m -XX:PermSize=64m -XX:MaxPermSize=256m"
+
+// http://netframework.tistory.com/401
+// https://github.com/Khoulaiz/gradle-jetty-eclipse-plugin
+*/
+
+jettyEclipseRun {
 	httpPort = 9000
-	reload = 'automatic'
-	scanIntervalSeconds = 2
-	/* Change context path (base url). otherwise defaults to name of project */
-	contextPath = ''
+	automaticReload = true
 }
 
 /* Multi-users environment */

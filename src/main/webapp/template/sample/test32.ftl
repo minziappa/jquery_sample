@@ -28,6 +28,8 @@ div {
 
 http://deepliquid.com/content/Jcrop.html
 
+This is only chrom 
+	
 <div id="contentContainer">
 	<img id="imgImg" src="/img/icon.jpg" alt="Smiley face" height="100" width="100"/>
 </div>
@@ -51,6 +53,7 @@ window.onload = function() {
 }
 
 function getStartPosition(e) {
+	if (!e) { var e= window.event};
 
 	xMousePoint = e.clientX;
 	yMousePoint = e.clientY;
@@ -67,6 +70,8 @@ function getStartPosition(e) {
 }
 
 function drag(e) {
+	if (!e) { var e= window.event};
+
     var xMousePointDrag = e.clientX;
     var yMousePointDrag = e.clientY;
 
@@ -86,5 +91,12 @@ function getEndPosition(e) {
 }
 
 </script>
-
+<br/>
+<select>
+	<option value="volvo">承認管理者</option>
+	<option value="saab">最高管理者</option>
+</select>
+<br/>
+<br/>
+<br/>
 </@layout.myLayout>
