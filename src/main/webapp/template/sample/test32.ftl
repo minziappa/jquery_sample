@@ -91,12 +91,5 @@ function getEndPosition(e) {
 }
 
 </script>
-<br/>
-<select>
-	<option value="volvo">承認管理者</option>
-	<option value="saab">最高管理者</option>
-</select>
-<br/>
-<br/>
-<br/>
+
 </@layout.myLayout>
