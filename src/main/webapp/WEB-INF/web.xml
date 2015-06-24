@@ -28,7 +28,7 @@
 
 	<servlet-mapping>
 		<servlet-name>sample</servlet-name>
-		<url-pattern>/sample/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 	<filter>
@@ -45,7 +45,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/sample/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
 	<error-page>

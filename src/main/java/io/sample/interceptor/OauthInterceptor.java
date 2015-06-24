@@ -29,7 +29,7 @@ public class OauthInterceptor implements HandlerInterceptor {
 			Object arg2) throws Exception {
 
 		String pathInfo = request.getPathInfo();
-		logger.info("pathInfo >>> " + pathInfo);
+		logger.info("path is >>> " + pathInfo);
 
 		return true;
 	}

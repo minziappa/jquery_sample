@@ -76,6 +76,7 @@ export GRADLE_OPTS="-Dfile.encoding=UTF-8 -Xmx512m -XX:PermSize=64m -XX:MaxPermS
 // https://github.com/Khoulaiz/gradle-jetty-eclipse-plugin
 */
 
+// gradle jettyEclipseRun
 jettyEclipseRun {
 	httpPort = 9000
 	automaticReload = true
