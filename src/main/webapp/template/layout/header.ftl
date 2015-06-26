@@ -19,8 +19,9 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<script src="/js/lib/json2.js"></script>
-
 		<link rel="stylesheet" href="/css/select2.css">
 		<script src="/js/lib/select2.js"></script>
 
+    <!-- Custom styles for this template -->
+    <link  rel="stylesheet" href="css/offcanvas.css">
 	</head>

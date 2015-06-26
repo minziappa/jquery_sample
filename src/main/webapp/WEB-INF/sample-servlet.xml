@@ -9,12 +9,12 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!-- Configures the @Controller programming model -->
-	
-	<mvc:resources location="classpath:/img/" mapping="/img/**"/>
-	<mvc:resources location="classpath:/css/" mapping="/css/**"/>
-	<mvc:resources location="classpath:/js/" mapping="/js/**"/>
 
 	<mvc:annotation-driven />
+
+	<mvc:resources location="/img/" mapping="/img/**"/>
+	<mvc:resources location="/css/" mapping="/css/**"/>
+	<mvc:resources location="/js/" mapping="/js/**"/>
 
 	<!-- Set The template Path -->
 	<bean id="freemarkerConfig"

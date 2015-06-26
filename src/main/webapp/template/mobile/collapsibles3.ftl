@@ -7,13 +7,17 @@
 
 <div data-role="page" id="pageone">
   <div data-role="header">
-    <h1>Expanded Collapsible Blocks</h1>
+    <h1>Nested Collapsible Blocks</h1>
   </div>
 
   <div data-role="main" class="ui-content">
-    <div data-role="collapsible" data-collapsed="false">
+    <div data-role="collapsible">
       <h1>Click me - I'm collapsible!</h1>
-      <p>I'm now expanded by default.</p>
+      <p>I'm the expanded content.</p>
+      <div data-role="collapsible">
+        <h1>Click me - I'm a nested collapsible block!</h1>
+        <p>I'm the expanded content in the nested collapsible block.</p>
+      </div>
     </div>
   </div>
 
@@ -21,5 +25,6 @@
     <h1>Insert Footer Text Here</h1>
   </div>
 </div> 
+
 
 </@layout.myLayout>
