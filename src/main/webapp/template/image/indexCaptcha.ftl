@@ -6,7 +6,11 @@
 </script>
 
 <style type="text/css">
+input, textarea { border: 1px solid #ccc }
 
+tr { margin: 5px; padding:5px;}
+
+.alert { font-size:15px; color:red; font-weight:bolder }
 </style>
 
 <div class="container">
@@ -19,7 +23,7 @@
 			<div class="jumbotron">
 
 				<center>
-				<form action="/image/captcha" method="post">
+				<form method="post">
 					<table cellspacing="15">
 						<tr>
 						<td>Name</td>
@@ -36,8 +40,7 @@
 					</table>
 			
 					<br>
-					<img src="captcha/CaptchaServlet"> 
-			
+					<img src="/image/captcha">
 					<br><br>
 					<input type="submit" value="submit">
 				</form>
