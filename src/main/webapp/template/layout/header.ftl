@@ -23,5 +23,5 @@
 		<script src="/js/lib/select2.js"></script>
 
     <!-- Custom styles for this template -->
-    <link  rel="stylesheet" href="css/offcanvas.css">
+    <link  rel="stylesheet" href="/css/offcanvas.css">
 	</head>
