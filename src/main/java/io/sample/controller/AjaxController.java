@@ -65,11 +65,7 @@ public class AjaxController extends AbstractBaseController {
     		value = "";
     	}
 
-		response.setContentType("application/json; charset=utf-8");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter pw = response.getWriter();
 		// pw.write("{\"aaa\":\"" + value + "\"}");
-
 		LinkedList<String> linked = new LinkedList<String>();
 		linked.add("aaa");
 		linked.add("abb");
@@ -83,9 +79,7 @@ public class AjaxController extends AbstractBaseController {
 
 		logger.info(jsonString);
 
-		pw.write(jsonString);
-		pw.flush();
-		pw.close();
+		this.handleWriteAjax(jsonString, response);
 	}
 
     @RequestMapping(value="/ajaxGet2")
@@ -108,9 +102,6 @@ public class AjaxController extends AbstractBaseController {
 //    		Thread.sleep(1000);
 //    	}
 
-		response.setContentType("application/json; charset=utf-8");
-		response.setHeader("Cache-Control", "no-cache");
-		PrintWriter pw = response.getWriter();
 		// pw.write("{\"aaa\":\"" + value + "\"}");
 		
 		LinkedList<Map<String, String>> linked = new LinkedList<Map<String, String>>();
@@ -134,9 +125,7 @@ public class AjaxController extends AbstractBaseController {
 
 		logger.info(jsonString);
 
-		pw.write(jsonString);
-		pw.flush();
-		pw.close();
+		this.handleWriteAjax(jsonString, response);
 	}
 
 }

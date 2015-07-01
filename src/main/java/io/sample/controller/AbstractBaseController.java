@@ -1,22 +1,28 @@
 package io.sample.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.FieldError;
@@ -41,6 +47,27 @@ public abstract class AbstractBaseController {
 		}
 		
 		return fileName;
+	}
+
+	public void handleWriteAjax(String jsonString, HttpServletResponse response) throws IOException {
+
+		response.setContentType("application/json; charset=utf-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter pw = response.getWriter();
+
+		pw.write(jsonString);
+		pw.flush();
+		pw.close();
+	}
+
+	public void handleWriteImage(BufferedImage bufferedImage, HttpServletResponse response) throws IOException {
+
+		response.setContentType("image/png");
+        OutputStream os = response.getOutputStream();
+        ImageIO.write(bufferedImage, "png", os);
+
+        os.flush();
+        os.close();
 	}
 
 	public void handleFileDownload(String fileName, byte[] byteOut, HttpServletResponse response) throws IOException {

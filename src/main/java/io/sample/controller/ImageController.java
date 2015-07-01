@@ -41,20 +41,6 @@ public class ImageController extends AbstractBaseController {
 
 	final Logger logger = LoggerFactory.getLogger(ImageController.class);
 
-    /**
-     * Index for ......
-     * 
-     * @param  ModelMap 
-     *         model
-     *         
-     * @throws  Exception
-     *          If a error occur, ...
-     *
-     * @return String
-     * 		   a file name of FTL.
-     * 
-     * @since  1.7
-     */
     @RequestMapping(value={"/{sample}"}, method=RequestMethod.GET)
 	public String index(@PathVariable String sample, ModelMap model) throws Exception {
 
@@ -100,16 +86,15 @@ public class ImageController extends AbstractBaseController {
     	String code = (String) request.getParameter("code");
 
     	if (captcha != null && code != null) {
-
     		if (captcha.equals(code)) {
     			model.addAttribute("alert", "<p class='alert'>Correct</p>");
     		} else {
     			model.addAttribute("alert", "<p class='alert'>Incorrect</p>");
     		}
-
     	} else {
-    		model.addAttribute("alert", "-");
+    		model.addAttribute("alert", "");
     	}
+
   	  	return "image/indexCaptcha";
     }
 
@@ -153,9 +138,9 @@ public class ImageController extends AbstractBaseController {
 		String captcha = String.copyValueOf(data[index]);
 		request.getSession().setAttribute("captcha", captcha );
 
-		int x = 0; 
+		int x = 0;
 		int y = 0;
-	
+
 		for (int i=0; i<data[index].length; i++) {
 			x += 10 + (Math.abs(r.nextInt()) % 15);
 			y = 20 + Math.abs(r.nextInt()) % 20;
@@ -164,11 +149,7 @@ public class ImageController extends AbstractBaseController {
 
 		g2d.dispose();
 
-		response.setContentType("image/png");
-		OutputStream os = response.getOutputStream();
-		ImageIO.write(bufferedImage, "png", os);
-		os.close();
-
+		this.handleWriteImage(bufferedImage, response);
 		// return "image/captcha";
     }
 
