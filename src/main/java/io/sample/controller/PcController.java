@@ -28,6 +28,11 @@ public class PcController extends AbstractBaseController {
 
 	final Logger logger = LoggerFactory.getLogger(PcController.class);
 
+    @RequestMapping(value={"/", ""}, method=RequestMethod.GET)
+	public String index(ModelMap model) throws Exception {
+		return "mobile/index";
+	}
+
     @RequestMapping(value="/{sample}", method=RequestMethod.GET)
 	public String index(@PathVariable String sample, ModelMap model) throws Exception {
 

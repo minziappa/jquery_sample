@@ -5,7 +5,7 @@ buildscript {
 	}
 	dependencies {
 		classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE')
-		classpath ('com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.+')
+		// classpath ('com.sahlbach.gradle:gradle-jetty-eclipse-plugin:1.9.+')
 		classpath ('org.ajoberstar:gradle-jacoco:0.1.0')
 	}
 }
@@ -13,7 +13,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'war'
-apply plugin: 'jettyEclipse'
+// apply plugin: 'jettyEclipse'
+apply plugin: 'jetty'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
@@ -76,12 +77,23 @@ export GRADLE_OPTS="-Dfile.encoding=UTF-8 -Xmx512m -XX:PermSize=64m -XX:MaxPermS
 // https://github.com/Khoulaiz/gradle-jetty-eclipse-plugin
 */
 
+jettyRun {
+	httpPort = 9001
+	reload = 'automatic'
+	scanIntervalSeconds = 2
+	/* Change context path (base url). otherwise defaults to name of project */
+	contextPath = ''
+}
+
+/*
 // gradle jettyEclipseRun
 jettyEclipseRun {
-	httpPort = 9000
+	httpPort = 9001
 	automaticReload = true
 	// rebuildIntervalInSeconds = 1
 }
+*/
+
 
 /* Multi-users environment */
 // -Pprofile=develop
