@@ -17,6 +17,9 @@ Captcha
 http://akiraly.github.io/cage/index.html
 http://zetcode.com/tutorials/jeetutorials/captcha/
 
+Image capture
+http://mrbool.com/java-image-processing-capturing-images-with-java-and-html5/30659
+
 Tool
 http://komodoide.com/
 
