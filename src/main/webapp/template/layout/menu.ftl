@@ -7,13 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="/">Home</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li <#if model??><#if model.navi == "mobile">class="active"</#if></#if>><a href="/mobile">Mobile</a></li>
+            <li <#if model??><#if model.navi == "pc">class="active"</#if></#if>><a href="/pc">PC</a></li>
+            <li <#if model??><#if model.navi == "realTime">class="active"</#if></#if>><a href="/realTime">RealTime</a></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->

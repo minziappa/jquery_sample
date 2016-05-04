@@ -25,15 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/***
- * The <code>IndexController</code> class represents action controller.
- * 1. Explain for a method .....
- * 
- * @author  Joon Kim
- * @version 0.1, 14/07/17
- * @see     io.sample.controller.ImageController#index()
- * @since   JDK1.7
- */
 @Controller
 @RequestMapping("/image")
 public class ImageController extends AbstractBaseController {
@@ -42,15 +33,9 @@ public class ImageController extends AbstractBaseController {
 
     @RequestMapping(value={"/{sample}"}, method=RequestMethod.GET)
 	public String index(@PathVariable String sample, ModelMap model) throws Exception {
-
     	String returnUrl = "image/index";
 
     	returnUrl = "image/" + sample;
-
-    	logger.info("returnUrl >>> " + returnUrl);
-    	logger.info("sample >>> " + sample);
-
-    	model.addAttribute("name", "Hello World!");
 
 		return returnUrl;
 	}

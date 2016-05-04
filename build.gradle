@@ -78,7 +78,7 @@ export GRADLE_OPTS="-Dfile.encoding=UTF-8 -Xmx512m -XX:PermSize=64m -XX:MaxPermS
 */
 
 jettyRun {
-	httpPort = 9001
+	httpPort = 9000
 	reload = 'automatic'
 	scanIntervalSeconds = 2
 	/* Change context path (base url). otherwise defaults to name of project */

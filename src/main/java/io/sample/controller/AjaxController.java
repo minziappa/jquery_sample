@@ -17,14 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/***
- * The <code>IndexController</code> class represents action controller.
- * 
- * @author  Joon Kim
- * @version 0.1, 14/07/17
- * @see     io.sample.controller.AjaxController#index()
- * @since   JDK1.7
- */
 @Controller
 @RequestMapping("/ajax")
 public class AjaxController extends AbstractBaseController {
@@ -103,7 +95,7 @@ public class AjaxController extends AbstractBaseController {
 //    	}
 
 		// pw.write("{\"aaa\":\"" + value + "\"}");
-		
+
 		LinkedList<Map<String, String>> linked = new LinkedList<Map<String, String>>();
 		Map<String, String> map1 = new LinkedHashMap<String, String>();
 		map1.put("map1", "value1");

@@ -1,5 +1,6 @@
 package io.sample.controller;
 
+import io.sample.bean.model.MainModel;
 import io.sample.bean.para.UserPara;
 
 import javax.servlet.http.HttpSession;
@@ -13,15 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/***
- * The <code>IndexController</code> class represents action controller.
- * 1. Explain for a method .....
- * 
- * @author  Joon Kim
- * @version 0.1, 14/07/17
- * @see     io.sample.controller.PcController#index()
- * @since   JDK1.7
- */
 @Controller
 @RequestMapping("/pc")
 public class PcController extends AbstractBaseController {
@@ -30,7 +22,15 @@ public class PcController extends AbstractBaseController {
 
     @RequestMapping(value={"/", ""}, method=RequestMethod.GET)
 	public String index(ModelMap model) throws Exception {
-		return "mobile/index";
+
+    	MainModel  mainModel = new MainModel();
+    	mainModel.setNavi("pc");
+
+    	model.addAttribute("model", mainModel);
+
+    	logger.info(">>> index");
+    	
+		return "pc/index";
 	}
 
     @RequestMapping(value="/{sample}", method=RequestMethod.GET)
@@ -42,7 +42,7 @@ public class PcController extends AbstractBaseController {
     		logger.info("this is null");
     	}
 
-    	if(sample.equals("sample")) {
+    	if(sample == null || sample.trim().isEmpty()) {
     		returnUrl = "index";
     	} else {
     		returnUrl = "pc/" + sample;	
@@ -50,7 +50,10 @@ public class PcController extends AbstractBaseController {
 
     	logger.info(">>>" + returnUrl);
 
-    	model.addAttribute("name", "Hello World!");
+    	MainModel  mainModel = new MainModel();
+    	mainModel.setNavi("pc");
+
+    	model.addAttribute("model", mainModel);
 
 		return returnUrl;
 	}
