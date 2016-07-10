@@ -1,4 +1,5 @@
-<#import "../layout/bootstrapLayout.ftl" as layout>
+<#import "../layout/pcLayout.ftl" as layout>
+<#import "/spring.ftl" as spring/>
 <@layout.myLayout>
 
 

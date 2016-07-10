@@ -1,4 +1,4 @@
-<#import "../layout/mobileLayout.ftl" as layout>
+<#import "../layout/pcLayout.ftl" as layout>
 <@layout.myLayout>
 <script type="text/javascript">
 
@@ -19,7 +19,7 @@
 	    <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 		    <div class="list-group">
 		      <a href="#" class="list-group-item active">Link</a>
-		      <a href="/sample/mb/page1" target="iframe1" class="list-group-item">page1</a>
+		      <a href="mobile/page1" target="iframe1" class="list-group-item">page1</a>
 		      <a href="mobile/page2" target="iframe1" class="list-group-item">page2</a>
 		      <a href="mobile/page3" target="iframe1" class="list-group-item">page3</a>
 		      <a href="mobile/form1" target="iframe1" class="list-group-item">form1</a>

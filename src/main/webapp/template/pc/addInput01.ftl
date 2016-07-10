@@ -1,4 +1,5 @@
-<#import "../layout/bootstrapLayout.ftl" as layout>
+<#import "../layout/pcLayout.ftl" as layout>
+<#import "/spring.ftl" as spring/>
 <@layout.myLayout>
 
 <style>
@@ -30,7 +31,7 @@ table#t01 th	{
 window.onload = function(){
 	var cnt = document.getElementById('theValue');
 	for(i=0; i < cnt; i++) {
-		addElement("${name}");
+		addElement("testName");
 	}
 }
 

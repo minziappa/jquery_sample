@@ -1,4 +1,4 @@
-<#import "../layout/bootstrapLayout.ftl" as layout>
+<#import "../layout/pcLayout.ftl" as layout>
 <#import "/spring.ftl" as spring/>
 <@layout.myLayout>
 <style>
@@ -27,5 +27,4 @@
 <span id="theCounter">70</span>
 
 <@spring.message "sample.parameter.update.ok.message"/>
-
 </@layout.myLayout>

@@ -332,10 +332,8 @@ function captureReturnKey(e) {
     return false;
 } 
 
-
 function exceptionKey(e) {
     if(e.keyCode==37 || e.keyCode==38 || e.keyCode==39 || e.keyCode==40) {
-    	
         return false;    	
     }
     return true;
@@ -360,7 +358,7 @@ function createList(tableName, i, availableNames) {
 
 	  var node = tcell.getElementsByTagName("ul");
 	  console.log("1>" + tcell.childNodes[0]);
-	  
+
 	  var eul = document.createElement("ul");
 	  // Single classname
 	  // eul.className='newClassName';

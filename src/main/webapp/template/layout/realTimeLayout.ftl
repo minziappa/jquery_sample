@@ -2,7 +2,7 @@
 <html>
 	<#include "realTimeHeader.ftl"/>
 	<body>
-	<#include "realTimeMenu.ftl"/>
+	<#include "menu.ftl"/>
 	<#nested/>
 	<#include "footer.ftl"/>
 	</body>

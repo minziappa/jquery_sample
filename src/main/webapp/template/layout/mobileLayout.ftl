@@ -1,10 +1,10 @@
 <#macro myLayout title="Mobile Sample">
 <html>
-	<#include "mobileHeader.ftl"/>
+	<#include "header.ftl"/>
 	<body>
-	<#include "mobileMenu.ftl"/>
+	<#include "menu.ftl"/>
 	<#nested/>
-	<#include "mobileFooter.ftl"/>
+	<#include "footer.ftl"/>
 	</body>
 </html>
 </#macro>
