@@ -183,7 +183,7 @@ function confirmData() {
 
 	  var inputHtml;
 	  var inputTag;
-	  
+	  console.log("cnt >> "+cnt);
 	  var selectHtml;
 	  var buttonHtml;
 	  for(i=0; i < cnt; i++) {

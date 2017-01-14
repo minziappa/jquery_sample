@@ -50,6 +50,8 @@ window.onload = function() {
 	img01.addEventListener('dragend', getEndPosition, false);
 
 	//drag.addEventListener('dragleave', handleDragLeave, false);
+	
+	console.log("test");
 }
 
 function getStartPosition(e) {

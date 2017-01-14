@@ -549,7 +549,9 @@ function releasPopover(event) {
 				<select name="hostOption" style="width:85px; margin-bottom: 0;" onchange="checkStatus(this,0);">
 					<option value="personal">Input</option><option value="take_turns">Take turns</option><option value="unknown">Unknown</option>
 				</select>
-				<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeydown="interverKeystroke(event, 0);">
+				<input type="text" name="aname" value="" autocomplete="off" autocorrect="off" autocapitilize="off" 
+					spellcheck="false" style="border: 1px solid gray;" size="37%" data-toggle="popover" data-trigger="manual" 
+						data-placement="top" title="Popover title" data-content="Default popover" onclick="releasPopover(this);" onkeydown="interverKeystroke(event, 0);">
 			</div>
 
 		</td>
