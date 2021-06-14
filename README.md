@@ -25,3 +25,12 @@ http://komodoide.com/
 
 Just Idea
 API Specification for developer.
+
+Convert from Html to PNG
+https://github.com/tsayen/dom-to-image
+https://stackoverflow.com/questions/10721884/render-html-to-an-image/32776834#32776834
+https://stackoverflow.com/questions/44494447/generate-and-download-screenshot-of-webpage-without-lossing-the-styles
+https://jsfiddle.net/g7ab2rc9/1/
+
+Download multi-images as Zip
+https://stuk.github.io/jszip/

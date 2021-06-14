@@ -1,42 +1,41 @@
+// gradle jettyRun -b jettyRun.gradle
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
 apply plugin: 'war'
-
-buildscript {
-	repositories { 
-		mavenCentral()
-		jcenter()
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-	}
-	dependencies { 
-    	classpath 'org.ajoberstar:gradle-jacoco:0.1.0'
-    	classpath 'org.gretty:gretty:+'
-	}
-}
+apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty.plugin'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-version = '1.0'
+buildscript {
+  repositories {
+    jcenter()
+  }
 
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
-    }
+  dependencies {
+    classpath 'org.gretty:gretty:+'
+  }
 }
+
+repositories {
+  jcenter()
+}
+
+// gradle install -Pmversion=0.5.3
+final String DEFAULT_MVERSION = '1.3.5'
+allprojects {
+	if (!project.hasProperty('mversion') || !mversion) {
+		ext.mversion = DEFAULT_MVERSION
+	}
+}
+
+// Set master version
+version = mversion
 
 repositories {
 	mavenLocal()
     mavenCentral()
-    maven { url "http://www.egovframe.go.kr/maven/" }
-}
-
-compileJava.options.encoding = 'UTF-8'
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
 }
 
 // For provided jars
@@ -52,6 +51,7 @@ tasks.withType(JavaCompile) {
 ext {
 	springVersion = '5.3.8'
 	logbackVersion = '1.1.3'
+	coreVersion = mversion
 	pluginsVersion = '0.1.0'
 }
 
@@ -83,6 +83,20 @@ dependencies {
     testCompile "junit:junit:4.+"
 }
 
+farm {
+  // 'jetty7', 'jetty8', 'jetty9', 'jetty93', 'jetty94', 'tomcat7', 'tomcat8'
+  servletContainer = 'jetty94'
+}
+
+gretty {
+	// springBoot = true
+	httpPort = 9000
+	scanInterval = 1
+	// Change context path (base url). otherwise defaults to name of project
+	contextPath = ''
+	jacocoEnabled = false
+}
+
 /* Multi-users environment */
 // -Pprofile=develop
 final String DEFAULT_PROFILE = 'develop'
@@ -99,24 +113,3 @@ allprojects {
 	}
 }
 
-test {
-    systemProperties 'property': 'value'
-}
-
-// Release for your local
-war {
-	war.archiveName "ROOT.war"
-}
-
-task deployWar {
-	copy {
-		from 'build/libs/ROOT.war'
-		into 'webapps'
-		// into '/usr/local/tomcat/webapps'
-		include '**/*.war'
-	}
-}
-
-//$ gradle deployWar
-// gradle -Pprofile=product deployWar
-deployWar.dependsOn(war)
